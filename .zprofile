@@ -19,7 +19,8 @@ set -o noclobber
 # dotfiles
 alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
-neofetch
+# Show neofetch on launch
+#neofetch
 
 #export VIRTUALENVWRAPPER_PYTHON=`which python`
 #export VIRTUALENVWRAPPER_VIRTUALENV=`which virtualenv`
