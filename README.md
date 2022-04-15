@@ -1,3 +1,3 @@
 # Dotfiles
 
-Personal dotfile for safe keeping
+Personal dotfiles for safe keeping
