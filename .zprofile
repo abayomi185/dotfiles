@@ -1,3 +1,6 @@
+# Terminal color config
+export TERM=xterm-256color
+
 export THEOS=~/theos
 
 export PATH="$HOME/.gem/ruby/2.6.3/bin:$PATH"
