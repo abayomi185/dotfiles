@@ -10,7 +10,8 @@ Plug 'KarimElghamry/vim-auto-comment'
 
 " File Explorer
 Plug 'preservim/nerdtree'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " Addon for NERDTree
 " NeoBundle 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -42,7 +43,15 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
 Plug 'kyazdani42/nvim-tree.lua'
 
+" Dracula theme
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+call plug#end()
+
 " -----------------------------
+
+" General configs
+exe 'source' '~/.config/nvim/conf.d/general.vim'
 
 " Configure airline
 exe 'source' '~/.config/nvim/conf.d/airline.vim'
@@ -50,4 +59,8 @@ exe 'source' '~/.config/nvim/conf.d/airline.vim'
 " Configure ALE
 exe 'source' '~/.config/nvim/conf.d/ale.vim'
 
-call plug#end()
+" Set color scheme
+exe 'source' '~/.config/nvim/conf.d/appearance.vim'
+
+" Config for inbuilt File Explorer for Neovim
+exe 'source' '~/.config/nvim/conf.d/netrw.vim'
