@@ -38,6 +38,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " LSP (Language Server Protocol) for nvim
 "Plug 'neovim/nvim-lspconfig'
 
+" Another File Explorer
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
 " -----------------------------
 
 " Configure airline
