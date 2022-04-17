@@ -7,6 +7,8 @@ export PATH="$HOME/.gem/ruby/2.6.3/bin:$PATH"
 
 export PATH="/usr/local/opt/python/libexec/bin:/usr/local/sbin:$PATH"
 
+export XDG_CONFIG_HOME="$HOME/.config"
+
 alias pip=pip3
 
 alias k=kubectl
