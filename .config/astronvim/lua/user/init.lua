@@ -55,6 +55,7 @@ local config = {
       --     require("lsp_signature").setup()
       --   end,
       -- },
+      {'neoclide/coc.nvim', branch = 'release'},
     },
     -- All other entries override the setup() call for default plugins
     treesitter = {
