@@ -55,7 +55,33 @@ local config = {
       --     require("lsp_signature").setup()
       --   end,
       -- },
-      {'neoclide/coc.nvim', branch = 'release'},
+      -- Conquer of Completion
+      -- {'neoclide/coc.nvim', branch = 'release'},
+      -- GiHub Copilot
+      -- {'github/copilot.vim', branch = 'release'},
+      -- DAP:
+      -- { "mfussenegger/nvim-dap" },
+      -- Rust support
+      {
+        'simrat39/rust-tools.nvim',
+        -- requires = {"nvim-lspconfig"}
+        -- Is configured via the server_registration_override installed below!
+      },
+      -- {'folke/trouble.nvim'}
+
+      -- {'JoosepAlviste/nvim-ts-context-commentstring'},
+      -- {
+      --   'zbirenbaum/copilot.lua',
+      --   event = {"VimEnter"},
+      --   config = function()
+      --     vim.defer_fn(function()
+      --       require("copilot").setup {
+      --         ft_disable = {"rust"}
+      --       }
+      --     end, 100)
+      --   end,
+      -- },
+      -- {"zbirenbaum/copilot-cmp", after = { "copilot.lua", "nvim-cmp" }}
     },
     -- All other entries override the setup() call for default plugins
     treesitter = {
@@ -64,6 +90,43 @@ local config = {
     packer = {
       compile_path = vim.fn.stdpath "config" .. "/lua/packer_compiled.lua",
     },
+
+    -- cmp = function(opts)
+    --   -- opts parameter is the default options table
+    --   -- the function is lazy loaded so cmp is able to be required
+    --   local cmp = require "cmp"
+    --   local luasnip = require "luasnip"
+    --
+    --   opts.mapping['<Tab>'] = cmp.mapping(function(fallback)
+    --     if cmp.visible() then
+    --       cmp.select_next_item()
+    --     elseif require('luasnip').expand_or_jumpable() then
+    --       vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+    --     elseif vim.b._copilot_suggestion ~= nil then
+    --       vim.fn.feedkeys(vim.api.nvim_replace_termcodes(vim.fn['copilot#Accept'](), true, true, true), '')
+    --     else
+    --       fallback()
+    --     end
+    --   end, {
+    --     'i',
+    --     's',
+    --   })
+    --
+    --   opts.mapping["<S-Tab>"] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --       cmp.select_prev_item()
+    --     elseif luasnip.jumpable(-1) then
+    --       luasnip.jump(-1)
+    --     else
+    --       fallback()
+    --     end
+    --   end, {
+    --     "i",
+    --     "s",
+    --   })
+    --
+    -- end
+
   },
 
   -- Add paths for including more VS Code style snippets in luasnip
@@ -87,7 +150,8 @@ local config = {
   -- true == 1000
   cmp = {
     source_priority = {
-      nvim_lsp = 1000,
+      copilot = 1000,
+      nvim_lsp = 900,
       luasnip = 750,
       buffer = 500,
       path = 250,
@@ -101,9 +165,29 @@ local config = {
     -- end,
 
     -- override the lsp installer server-registration function
-    -- server_registration = function(server, opts)
-    --   server:setup(opts)
-    -- end
+    server_registration = function(server, opts)
+       -- Special code for rust.tools.nvim!
+      if server.name == "rust_analyzer" then
+        -- local extension_path = vim.fn.stdpath "data" .. "/dapinstall/codelldb/extension"
+        -- local codelldb_path = extension_path .. "/adapter/codelldb"
+        -- local liblldb_path = extension_path .. "/lldb/lib/liblldb.so"
+
+        require("rust-tools").setup {
+          -- server = opts,
+          server = vim.tbl_deep_extend("force", server:get_default_options(), opts),
+          -- tools = {
+          --   inlay_hints = {
+          --     parameter_hints_prefix = "  ",
+          --     other_hints_prefix = "  ",
+          --   }
+          -- }
+        }
+        server:attach_buffers()
+        -- require("rust-tools").start_standalone_if_required()
+      else
+        server:setup(opts)
+      end
+    end,
 
     -- Add overrides for LSP server settings, the keys are the name of the server
     ["server-settings"] = {
@@ -150,6 +234,11 @@ local config = {
       sources = {
         -- Set a formatter
         formatting.rufo,
+
+        -- custom formatters
+        -- formatting.prettierd,
+        -- formatting.rustfmt,
+
         -- Set a linter
         diagnostics.rubocop,
       },
@@ -176,6 +265,37 @@ local config = {
 
     -- Set key bindings
     map("n", "<C-s>", ":w!<CR>")
+
+    -- Move line
+    map("v", "<A-Down>", ":m '>+1<CR>gv=gv")
+    map("v", "<A-Up>", ":m '>-2<CR>gv=gv")
+    map("v", "<S-k>", ":m '>+1<CR>gv=gv")
+    map("v", "<S-j>", ":m '>-2<CR>gv=gv")
+
+    -- Resize windows
+    map("n", "<A-Up>", function()
+      require("smart-splits").resize_up()
+    end)
+    map("n", "<A-Down>", function()
+      require("smart-splits").resize_down()
+    end)
+    map("n", "<A-Left>", function()
+      require("smart-splits").resize_left()
+    end)
+    map("n", "<A-Right>", function()
+      require("smart-splits").resize_right()
+    end)
+
+    -- Copilot accept suggestion
+    -- vim.g.copilot_no_tab_map = true
+    -- vim.g.copilot_assume_mapped = true
+    -- map("i", "<C-j>", function()
+    --   vim.fn['copilot#Accept']()
+    -- end)
+    -- map("i", "<C-J", "copilot#Accept('<CR>')", {expr=true, silent=true})
+
+    -- Change Neotree toggle location
+    -- map("n", "<leader>e", "<cmd>Neotree toggle right<CR>")
 
     -- Set autocommands
     vim.api.nvim_create_augroup("packer_conf", {})

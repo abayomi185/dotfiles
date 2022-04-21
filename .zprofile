@@ -13,6 +13,8 @@ alias pip=pip3
 
 alias k=kubectl
 
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
 # Make the terminal safe
 set -o noclobber
 #alias cp='cp -i'
