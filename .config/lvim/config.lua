@@ -11,7 +11,10 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "onedarker"
+lvim.colorscheme = "onedark"
+-- lvim.colorscheme = "nightfox"
+-- Theme options
+-- vim.g.material_style = "darker"
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -145,18 +148,91 @@ vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyz
 
 -- Additional Plugins
 lvim.plugins = {
-  --     {"folke/tokyonight.nvim"},
+  -- Themes
+  { "folke/tokyonight.nvim" },
+  { "marko-cerovac/material.nvim" },
+  -- { "joshdick/onedark.vim" },
+  -- { "olimorris/onedarkpro.nvim" },
+  { "navarasu/onedark.nvim",
+    config = function()
+      require('onedark').setup {
+        style = "dark",
+        toggle_style_list = {
+          'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'
+        },
+        colors = {},
+      }
+    end
+  },
+  -- {
+  --   "catppuccin/nvim",
+  --   as = "catppuccin"
+  -- },
+  -- { "EdenEast/nightfox.nvim" },
+  -- { "projekt0n/github-nvim-theme" },
+  -- { "Mofiqul/dracula.nvim" },
+  -- { "lourenci/github-colors" },
+  -- { "Th3Whit3Wolf/one-nvim" },
+  -- { "lunarvim/colorschemes" },
+
+  -- Discord presence
+  {
+    'andweeb/presence.nvim',
+    config = function()
+      require("presence"):setup {
+        main_image = "file",
+      }
+    end
+  },
+  -- Other
   {
     "folke/trouble.nvim",
     cmd = "TroubleToggle",
   },
   {
+    "p00f/nvim-ts-rainbow",
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        highlight = {
+          -- ...
+        },
+        rainbow = {
+          enable = true,
+          -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+          disable = { "html" },
+          extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+          -- max_file_lines = nil, -- Do not enable for files with more than n lines, int
+          -- colors = {}, -- table of hex strings
+          -- termcolors = {} -- table of colour name strings
+        }
+      }
+    end
+  },
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup({ "*" }, {
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = true, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+      })
+    end,
+  },
+  {
     "simrat39/rust-tools.nvim",
     config = function()
-      local lsp_installer_servers = require "nvim-lsp-installer.servers"
-      local _, requested_server = lsp_installer_servers.get_server "rust_analyzer"
+      -- local lsp_installer_servers = require "nvim-lsp-installer.servers"
+      -- local _, requested_server = lsp_installer_servers.get_server "rust_analyzer"
       require("rust-tools").setup({
         tools = {
+          inlay_hints = {
+            parameter_hints_prefix = "  ",
+            other_hints_prefix = "  ",
+          },
           autoSetHints = true,
           hover_with_actions = true,
           runnables = {
@@ -164,7 +240,7 @@ lvim.plugins = {
           },
         },
         server = {
-          cmd_env = requested_server._default_options.cmd_env,
+          -- cmd_env = requested_server._default_options.cmd_env,
           on_attach = require("lvim.lsp").common_on_attach,
           on_init = require("lvim.lsp").common_on_init,
         },
