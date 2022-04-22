@@ -113,7 +113,7 @@ if not utils.is_available "which-key.nvim" then
 
   -- NeoTree
   if utils.is_available "neo-tree.nvim" then
-    map("n", "<leader>e", "<cmd>Neotree toggleCR>")
+    map("n", "<leader>e", "<cmd>Neotree toggle<CR>")
     map("n", "<leader>o", "<cmd>Neotree focus<CR>")
   end
 

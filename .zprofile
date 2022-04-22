@@ -15,6 +15,8 @@ alias k=kubectl
 
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
+alias lvim="/Users/yomi/.local/bin/lvim"
+
 # Make the terminal safe
 set -o noclobber
 #alias cp='cp -i'
