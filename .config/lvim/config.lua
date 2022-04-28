@@ -11,10 +11,28 @@ an executable
 -- general
 lvim.log.level = "warn"
 lvim.format_on_save = true
-lvim.colorscheme = "onedark"
--- lvim.colorscheme = "nightfox"
+-- lvim.colorscheme = "one"
+-- lvim.colorscheme = "onedarker"
+lvim.colorscheme = "onedarkpro"
 -- Theme options
--- vim.g.material_style = "darker"
+require("onedarkpro").setup {
+  theme = "onedark",
+  -- colors = {
+  --   red = "#d1d1d1"
+  -- },
+  styles = {
+    functions = "italic",
+    keywords = "italic",
+    virtual_text = "italic,underline",
+  },
+  -- options = {
+  --   bold = true,
+  --   italic = true,
+  --   underline = true,
+  --   undercurl = true,
+  --   cursorline = true,
+  -- },
+}
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
@@ -149,21 +167,32 @@ vim.list_extend(lvim.lsp.automatic_configuration.skipped_servers, { "rust_analyz
 -- Additional Plugins
 lvim.plugins = {
   -- Themes
-  { "folke/tokyonight.nvim" },
-  { "marko-cerovac/material.nvim" },
-  -- { "joshdick/onedark.vim" },
-  -- { "olimorris/onedarkpro.nvim" },
-  { "navarasu/onedark.nvim",
-    config = function()
-      require('onedark').setup {
-        style = "dark",
-        toggle_style_list = {
-          'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'
-        },
-        colors = {},
-      }
-    end
-  },
+  -- { "folke/tokyonight.nvim" },
+  -- { "marko-cerovac/material.nvim" },
+  { "olimorris/onedarkpro.nvim" },
+  -- { "navarasu/onedark.nvim",
+  --   config = function()
+  --     require('onedark').setup {
+  --       style = "dark",
+  --       toggle_style_list = {
+  --         'dark', 'darker', 'cool', 'deep', 'warm', 'warmer', 'light'
+  --       },
+  --       -- plugins = {
+  --       --   nvim_ts_rainbow = false
+  --       -- }
+  --       -- colors = {
+  --       --   purple = "#bd86ce",
+  --       -- }
+  --     }
+  --   end
+  -- },
+  -- { "rakr/vim-one",
+  -- config = function()
+  --   require("vim-one").setup {
+  --     -- one#highlight(group, fg, bg, attribute)
+  --   }
+  -- end
+  -- },
   -- {
   --   "catppuccin/nvim",
   --   as = "catppuccin"
@@ -173,7 +202,7 @@ lvim.plugins = {
   -- { "Mofiqul/dracula.nvim" },
   -- { "lourenci/github-colors" },
   -- { "Th3Whit3Wolf/one-nvim" },
-  -- { "lunarvim/colorschemes" },
+  { "lunarvim/colorschemes" },
 
   -- Discord presence
   {
@@ -190,23 +219,48 @@ lvim.plugins = {
     cmd = "TroubleToggle",
   },
   {
+    "folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("todo-comments").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  },
+  {
     "p00f/nvim-ts-rainbow",
     config = function()
       require("nvim-treesitter.configs").setup {
-        highlight = {
-          -- ...
-        },
+        -- highlight = {
+        --   -- ...
+        -- },
         rainbow = {
           enable = true,
           -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
           disable = { "html" },
           extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
           -- max_file_lines = nil, -- Do not enable for files with more than n lines, int
-          -- colors = {}, -- table of hex strings
-          -- termcolors = {} -- table of colour name strings
+          colors = {
+            "#689d6a", --green
+            "#cc241d", --red
+            "#a89984", --grey
+            "#b16286", --Magenta
+            "#d79921", --yellow
+            "#d65d0e", --orange
+            "#458588", --cyan
+          }, -- table of hex strings
+          -- termcolors = {
+          --   "Red",
+          --   "Green",
+          -- } -- table of colour name strings
         }
       }
     end
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
   },
   {
     "norcalli/nvim-colorizer.lua",

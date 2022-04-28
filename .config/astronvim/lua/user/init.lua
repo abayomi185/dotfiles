@@ -281,7 +281,7 @@ local config = {
 
 				-- custom formatters
 				formatting.prettierd,
-				formatting.rustfmt,
+				-- formatting.rustfmt,
 				formatting.stylua,
 
 				-- Set a linter
