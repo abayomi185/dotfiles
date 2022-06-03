@@ -1,4 +1,5 @@
 --[[
+
 lvim is the global options object
 
 Linters should be
@@ -34,10 +35,23 @@ require("onedarkpro").setup {
   -- },
 }
 
+-- Rainbow colors for parenthesis - nvim-ts-rainbow
+-- local rainbow = { "#FFFFFF", "#CCCC88", "#88CC88", "#88CCCC", "#8888CC", "#CC88CC" }
+-- require "nvim-treesitter.configs".setup {
+--   enable = true,
+--   rainbow = { colors = rainbow }
+-- }
+-- for i, c in ipairs(rainbow) do -- p00f/rainbow#81
+--   vim.cmd(("hi rainbowcol%d guifg=%s"):format(i, c))
+-- end
+
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<M-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<leader>d"] = '"_d'
+
 -- unmap a default keymapping
 -- lvim.keys.normal_mode["<C-Up>"] = false
 -- edit a default keymapping
@@ -72,6 +86,9 @@ lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 --   l = { "<cmd>Trouble loclist<cr>", "LocationList" },
 --   w = { "<cmd>Trouble workspace_diagnostics<cr>", "Wordspace Diagnostics" },
 -- }
+lvim.builtin.which_key.mappings["d"] = {
+  "delete"
+}
 
 -- TODO: User Config for predefined plugins
 -- After changing plugin config exit and reopen LunarVim, Run :PackerInstall :PackerCompile
@@ -94,6 +111,7 @@ lvim.builtin.treesitter.ensure_installed = {
   "tsx",
   "css",
   "rust",
+  "svelte",
   "java",
   "yaml",
 }
@@ -251,10 +269,10 @@ lvim.plugins = {
             "#d65d0e", --orange
             "#458588", --cyan
           }, -- table of hex strings
-          -- termcolors = {
-          --   "Red",
-          --   "Green",
-          -- } -- table of colour name strings
+          --   -- termcolors = {
+          --   --   "Red",
+          --   --   "Green",
+          --   -- } -- table of colour name strings
         }
       }
     end
@@ -278,9 +296,11 @@ lvim.plugins = {
   },
   {
     "simrat39/rust-tools.nvim",
+    -- commit = "e29fb47326093fb197f17eae5ac689979a9ce191",
     config = function()
       -- local lsp_installer_servers = require "nvim-lsp-installer.servers"
       -- local _, requested_server = lsp_installer_servers.get_server "rust_analyzer"
+      -- require("nvim-lsp-installer").setup {} -- Potentially reemove this, does not seem to work
       require("rust-tools").setup({
         tools = {
           inlay_hints = {
@@ -306,5 +326,3 @@ lvim.plugins = {
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- lvim.autocommands.custom_groups = {
---   { "BufWinEnter", "*.lua", "setlocal ts=8 sw=8" },
--- }

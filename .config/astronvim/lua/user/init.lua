@@ -45,6 +45,13 @@ local config = {
 
 	-- Configure plugins
 	plugins = {
+
+		-- neo_tree = {
+		--   window = {
+		--     position = "right",
+		--   },
+		-- },
+
 		-- Add plugins, the packer syntax without the "use"
 		init = {
 			-- { "andweeb/presence.nvim" },

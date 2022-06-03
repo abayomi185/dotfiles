@@ -1,5 +1,7 @@
 # Starship config
 
+command_timeout = 1000
+
 # Inserts a blank line between shell prompts
 # format = "$all$time$status$shell$character"
 # right_format = "$time"

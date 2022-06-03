@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+. "$HOME/.fig/shell/zprofile.pre.zsh"
 # Terminal color config
 export TERM=xterm-256color
 
@@ -16,6 +18,8 @@ alias k=kubectl
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 alias lvim="/Users/yomi/.local/bin/lvim"
+
+alias vi="lvim"
 
 # Make the terminal safe
 set -o noclobber
@@ -53,3 +57,5 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+# Fig post block. Keep at the bottom of this file.
+. "$HOME/.fig/shell/zprofile.post.zsh"

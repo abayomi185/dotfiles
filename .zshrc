@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+. "$HOME/.fig/shell/zshrc.pre.zsh"
 # zmodload zsh/zprof
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -44,3 +46,6 @@ export PATH="/usr/local/opt/util-linux/sbin:$PATH"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 eval "$(starship init zsh)"
+
+# Fig post block. Keep at the bottom of this file.
+. "$HOME/.fig/shell/zshrc.post.zsh"
