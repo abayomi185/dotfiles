@@ -46,6 +46,7 @@ yabai -m rule --add app="^ImageOptim$" manage=off
 yabai -m rule --add app="^GoodNotes$" manage=off
 yabai -m rule --add app="^DaisyDisk$" layer=above manage=off
 yabai -m rule --add app="^Screen Sharing$" manage=off
+yabai -m rule --add app="^Microsoft Remote Desktop$" manage=off
 yabai -m rule --add app="^VNC Viewer$" manage=off
 yabai -m rule --add app="^Spotify$" manage=off
 yabai -m rule --add app="^Notes$" manage=off
