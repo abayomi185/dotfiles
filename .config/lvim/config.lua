@@ -43,6 +43,9 @@ lvim.keys.normal_mode["<M-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<leader>d"] = '"_d'
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
+-- nnoremap <silent> <C-z> :ToggleTerminal<Enter>
+lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm<CR>"
+-- lvim.keys.normal_mode["<C-t>"] = ":ToggleTabTerminal<CR>"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
 -- override a default keymapping
@@ -92,6 +95,7 @@ lvim.builtin.alpha.active = true
 lvim.builtin.alpha.mode = "dashboard"
 lvim.builtin.notify.active = true
 lvim.builtin.terminal.active = true
+lvim.builtin.dap.active = true
 lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.setup.renderer.icons.show.git = false
 
@@ -379,10 +383,20 @@ lvim.plugins = {
       }
     end
   },
+  { 'caenrique/nvim-toggle-terminal' },
   -- {
   --   "SmiteshP/nvim-navic",
   --   requires = "neovim/nvim-lspconfig"
   -- },
+  {
+    'rmagatti/auto-session',
+    config = function()
+      require("auto-session").setup {
+        log_level = "error",
+        auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
+      }
+    end
+  }
 }
 
 -- More Copilot required options
