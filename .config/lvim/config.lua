@@ -396,6 +396,14 @@ lvim.plugins = {
         auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/" },
       }
     end
+  },
+  {
+    'saecki/crates.nvim',
+    event = { "BufRead Cargo.toml" },
+    requires = { { 'nvim-lua/plenary.nvim' } },
+    config = function()
+      require('crates').setup()
+    end,
   }
 }
 
