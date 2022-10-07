@@ -163,20 +163,31 @@ lvim.lsp.diagnostics.float.focusable = true
 -- end
 
 -- -- set a formatter, this will override the language server formatting capabilities (if it exists)
--- local formatters = require "lvim.lsp.null-ls.formatters"
--- formatters.setup {
---   { command = "black", filetypes = { "python" } },
---   { command = "isort", filetypes = { "python" } },
---   {
---     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
---     command = "prettier",
---     ---@usage arguments to pass to the formatter
---     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
---     extra_args = { "--print-with", "100" },
---     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
---     filetypes = { "typescript", "typescriptreact" },
---   },
--- }
+local formatters = require "lvim.lsp.null-ls.formatters"
+formatters.setup {
+  { command = "black", filetypes = { "python" } },
+  { command = "isort", filetypes = { "python" } },
+  --   {
+  --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+  --     command = "prettier",
+  --     ---@usage arguments to pass to the formatter
+  --     -- these cannot contain whitespaces, options such as `--line-width 80` become either `{'--line-width', '80'}` or `{'--line-width=80'}`
+  --     extra_args = { "--print-with", "100" },
+  --     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+  --     filetypes = { "typescript", "typescriptreact" },
+  --   },
+  {
+    -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+    command = "prettierd",
+    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "svelte" }
+  },
+  -- {
+  --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
+  --     command = "eslint",
+  --     filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "svelte" }
+  --     ---@usage specify which filetypes to enable. By default a providers will attach to all the filetypes it supports.
+  --   },
+}
 
 -- -- set additional linters
 -- local linters = require "lvim.lsp.null-ls.linters"
@@ -297,6 +308,12 @@ lvim.plugins = {
       }
     end
   },
+  {
+    "windwp/nvim-ts-autotag",
+    config = function()
+      require("nvim-ts-autotag").setup()
+    end,
+  },
   -- This is included in Lvim now
   -- {
   --   "lukas-reineke/indent-blankline.nvim",
@@ -329,15 +346,26 @@ lvim.plugins = {
             other_hints_prefix = "  ",
           },
           autoSetHints = true,
-          hover_with_actions = true,
+          -- hover_with_actions = true,
           runnables = {
             use_telescope = true,
+          },
+          hover_actions = {
+            auto_focus = true,
           },
         },
         server = {
           -- cmd_env = requested_server._default_options.cmd_env,
-          on_attach = require("lvim.lsp").common_on_attach,
+          -- on_attach = require("lvim.lsp").common_on_attach, -- old implementation
           on_init = require("lvim.lsp").common_on_init,
+          on_attach = function(client, bufnr)
+            require("lvim.lsp").common_on_attach(client, bufnr)
+            local rt = require "rust-tools"
+            -- Hover actions
+            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+            -- Code action groups
+            vim.keymap.set("n", "<leader>lA", rt.code_action_group.code_action_group, { buffer = bufnr })
+          end,
         },
       })
     end,
@@ -350,6 +378,9 @@ lvim.plugins = {
         -- even more opts
       }
     end
+  },
+  { "rcarriga/nvim-dap-ui",
+    requires = { "mfussenegger/nvim-dap" }
   },
   -- Copilot section
   { "github/copilot.vim" },
