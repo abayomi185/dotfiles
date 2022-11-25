@@ -40,7 +40,7 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<M-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<leader>d"] = '"_d'
+lvim.keys.visual_mode["<leader>d"] = '"_d'
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- nnoremap <silent> <C-z> :ToggleTerminal<Enter>
