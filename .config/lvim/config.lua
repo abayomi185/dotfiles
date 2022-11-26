@@ -40,7 +40,7 @@ lvim.leader = "space"
 -- add your own keymapping
 lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
 lvim.keys.normal_mode["<M-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<leader>d"] = '"_d'
+lvim.keys.visual_mode["<leader>d"] = '"_d'
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- nnoremap <silent> <C-z> :ToggleTerminal<Enter>
@@ -179,7 +179,7 @@ formatters.setup {
   {
     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
     command = "prettierd",
-    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "svelte" }
+    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "svelte", "json", "jsonc" }
   },
   -- {
   --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -460,6 +460,20 @@ lvim.plugins = {
         },
       }
     end
+  },
+  {
+    'wfxr/minimap.vim',
+    run = "cargo install --locked code-minimap",
+    cmd = { "Minimap", "MinimapClose", "MinimapToggle", "MinimapRefresh", "MinimapUpdateHighlight" },
+    config = function()
+      vim.cmd("let g:minimap_width = 10")
+      vim.cmd("let g:minimap_auto_start = 1")
+      vim.cmd("let g:minimap_auto_start_win_enter = 1")
+    end,
+  },
+  {
+    "npxbr/glow.nvim",
+    ft = { "markdown" }
   },
 }
 
