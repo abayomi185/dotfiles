@@ -45,6 +45,9 @@ lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 -- nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm<CR>"
+-- Custom workaround for vertical resize on macOS
+lvim.keys.normal_mode["<C-M-l>"] = ":vertical resize -2<CR>"
+lvim.keys.normal_mode["<C-M-h>"] = ":vertical resize +2<CR>"
 -- lvim.keys.normal_mode["<C-t>"] = ":ToggleTabTerminal<CR>"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
@@ -475,6 +478,19 @@ lvim.plugins = {
     "npxbr/glow.nvim",
     ft = { "markdown" }
   },
+  -- {
+  --   'xbase-lab/xbase',
+  --   run = 'make install', -- make free_space (not recommended, longer build time)
+  --   requires = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim",
+  --     "neovim/nvim-lspconfig"
+  --   },
+  --   config = function()
+  --     require 'xbase'.setup({}) -- see default configuration bellow
+  --   end
+  -- }
+  { "nvim-treesitter/playground" },
 }
 
 -- More Copilot required options

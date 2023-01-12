@@ -17,6 +17,12 @@ hyper - backspace : $(yabai -m window $(yabai -m query --windows --window | jq -
 ## open terminal
 hyper - return : /Applications/iTerm.app/Contents/MacOS/iTerm2
 
+# focus window
+hyper - h : yabai -m window --focus west
+hyper - j : yabai -m window --focus south
+hyper - k : yabai -m window --focus north
+hyper - l : yabai -m window --focus east
+
 ## swap window
 hyper - q : yabai -m window --swap west
 # shift + alt - j : yabai -m window --swap south
@@ -135,7 +141,10 @@ yabai -m window --grid 6:8:2:1:4:4 ## toggle sticky alt - s : yabai -m window --
 ## toggle sticky, float and resize to picture-in-picture size alt - p : yabai -m window --toggle sticky;\ yabai -m window --grid 5:5:4:0:1:1 ## change layout of desktop ctrl + alt - a : yabai -m space --layout bsp ctrl + alt - d : yabai -m space --layout float
 
 ## toggle window split type
-#alt - e : yabai -m window --toggle split
+alt - e : yabai -m window --toggle split
+
+# balance size of windows in current space
+alt - b : yabai -m space --balance
 
 ## toggle window border
 #shift + alt - b : yabai -m window --toggle border

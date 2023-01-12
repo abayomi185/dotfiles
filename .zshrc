@@ -60,8 +60,11 @@ export PATH="/usr/local/opt/util-linux/sbin:$PATH"
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
+# export PATH="$HOME/.rbenv/shims:$PATH"
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+eval "$(rbenv init - zsh)"
+
 eval "$(starship init zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--extended"
-export PATH="/usr/local/opt/ruby/bin:$PATH"

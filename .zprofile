@@ -17,6 +17,7 @@ alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 
 alias lvim="/Users/yomi/.local/bin/lvim"
 
+alias nvim="lvim"
 alias vi="lvim"
 
 # Make the terminal safe
