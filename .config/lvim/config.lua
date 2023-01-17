@@ -15,12 +15,46 @@ lvim.format_on_save = true
 -- to disable icons and use a minimalist setup, uncomment the following
 -- lvim.use_icons = false
 
-lvim.colorscheme = "onedarkpro"
+lvim.colorscheme = "onedark_vivid"
 require("onedarkpro").setup {
-  theme = "onedark",
-  -- colors = {
-  --   red = "#d1d1d1"
-  -- },
+  -- theme = "onedark",
+  colors = {
+    -- red = "#e06c75",
+    -- purple = "#c678dd"
+    fg = "#abb2bf",
+    bg = "#282c34",
+    black = "#282c34",
+    white = "#abb2bf",
+    red = "#e06c75",
+    orange = "#d19a66",
+    purple = "#c678dd",
+    gray = "#5c6370",
+    blue = "#61afef",
+    cyan = "#56b6c2",
+    yellow = "#e5c07b",
+    green = "#98c379",
+
+    comment = "#7f848e",
+    highlight = "#e2be7d",
+    selection = "#414858",
+    indentline = "#383d48",
+    cursorline = "#2d313b",
+    color_column = "#2d313b",
+
+    diff_add = "#003e4a",
+    diff_delete = "#501b20",
+    diff_text = "#005869",
+
+    fg_gutter_inactive = "#abb2bf",
+    fg_gutter = "#3d4350",
+    bg_statusline = "#22262d",
+    float_bg = "#21252b",
+
+    virtual_text_error = "#e8939a",
+    virtual_text_warning = "#edd2a1",
+    virtual_text_information = "#90c7f4",
+    virtual_text_hint = "#7ec7d1",
+  },
   styles = {
     functions = "italic",
     keywords = "italic",
@@ -33,6 +67,9 @@ require("onedarkpro").setup {
   --   undercurl = true,
   --   cursorline = true,
   -- },
+  options = {
+    terminal_colors = false
+  }
 }
 
 -- keymappings [view all the defaults by pressing <leader>Lk]
