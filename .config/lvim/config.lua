@@ -85,6 +85,18 @@ lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm<CR>"
 -- Custom workaround for vertical resize on macOS
 lvim.keys.normal_mode["<C-M-l>"] = ":vertical resize -2<CR>"
 lvim.keys.normal_mode["<C-M-h>"] = ":vertical resize +2<CR>"
+-- Copilot mapping
+lvim.keys.normal_mode["gp"] = ":Copilot panel<CR>"
+-- Telescope mappings
+lvim.keys.normal_mode["<leader>ss"] = ":Telescope<CR>"
+-- Harpoon
+lvim.keys.normal_mode["<leader>mh"] = ":lua require('harpoon.ui').toggle_quick_menu()<CR>"
+lvim.keys.normal_mode["<leader>mj"] = ":lua require('harpoon.mark').add_file()<CR>"
+lvim.keys.normal_mode["<leader>mm"] = ":lua require('harpoon.ui').nav_next()"
+lvim.keys.normal_mode["<leader>mM"] = ":lua require('harpoon.ui').nav_prev()"
+lvim.keys.normal_mode["<leader>1"] = ":lua require('harpoon.ui').nav_file(1)"
+lvim.keys.normal_mode["<leader>2"] = ":lua require('harpoon.ui').nav_file(2)"
+lvim.keys.normal_mode["<leader>3"] = ":lua require('harpoon.ui').nav_file(3)"
 -- lvim.keys.normal_mode["<C-t>"] = ":ToggleTabTerminal<CR>"
 -- unmap a default keymapping
 -- vim.keymap.del("n", "<C-Up>")
@@ -127,6 +139,9 @@ lvim.keys.normal_mode["<C-M-h>"] = ":vertical resize +2<CR>"
 
 lvim.builtin.which_key.mappings["d"] = {
   "delete"
+}
+lvim.builtin.which_key.mappings["gd"] = {
+  "copilot panel"
 }
 
 -- TODO: User Config for predefined plugins
@@ -528,6 +543,13 @@ lvim.plugins = {
   --   end
   -- }
   { "nvim-treesitter/playground" },
+  { "ThePrimeagen/harpoon",
+    requires = { { 'nvim-lua/plenary.nvim' } },
+    config = function()
+      require("telescope").load_extension('harpoon')
+      require("harpoon").setup()
+    end
+  }
 }
 
 -- More Copilot required options
