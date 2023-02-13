@@ -68,3 +68,8 @@ eval "$(starship init zsh)"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_OPTS="--extended"
+
+# pnpm
+export PNPM_HOME="/Users/yomi/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
