@@ -1,26 +1,18 @@
-local impatient_ok, impatient = pcall(require, "impatient")
-if impatient_ok then
-  impatient.enable_profile()
-end
-
-vim.opt.rtp:append(vim.fn.stdpath "config" .. "/../astronvim")
-
 for _, source in ipairs {
-  "core.utils",
-  "core.options",
-  "core.plugins",
-  "core.autocmds",
-  "core.mappings",
-  "core.ui",
-  "configs.which-key-register",
+  "astronvim.bootstrap",
+  "astronvim.options",
+  "astronvim.lazy",
+  "astronvim.autocmds",
+  "astronvim.mappings",
 } do
   local status_ok, fault = pcall(require, source)
-  if not status_ok then
-    error("Failed to load " .. source .. "\n\n" .. fault)
+  if not status_ok then vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault) end
+end
+
+if astronvim.default_colorscheme then
+  if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
+    require("astronvim.utils").notify("Error setting up colorscheme: " .. astronvim.default_colorscheme, "error")
   end
 end
 
-local polish = astronvim.user_plugin_opts("polish", nil, false)
-if type(polish) == "function" then
-  polish()
-end
+require("astronvim.utils").conditional_func(astronvim.user_opts("polish", nil, false), true)

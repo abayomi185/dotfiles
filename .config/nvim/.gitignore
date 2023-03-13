@@ -1,3 +1,9 @@
-plugin
+!colors/astronvim.lua
+colors/*
+docs
+ginit.vim
 lua/user
-lua/packer_compiled.lua
+plugin
+ftplugin
+spell
+.luarc.json
