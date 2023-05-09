@@ -20,13 +20,16 @@ lvim.colorscheme = "onedark"
 -- keymappings [view all the defaults by pressing <leader>Lk]
 lvim.leader = "space"
 -- add your own keymapping
-lvim.keys.normal_mode["<C-s>"] = ":w<cr>"
-lvim.keys.normal_mode["<M-s>"] = ":w<cr>"
+lvim.keys.normal_mode["<C-s>"] = ":w<CR>"
+lvim.keys.normal_mode["<M-s>"] = ":w<CR>"
 lvim.keys.visual_mode["<leader>d"] = '"_d'
 lvim.keys.normal_mode["<S-l>"] = ":BufferLineCycleNext<CR>"
 lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
+lvim.keys.normal_mode["<leader>v"] = "<C-v>"
 -- nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm<CR>"
+-- Telescope mappings
+lvim.keys.normal_mode["<leader>sg"] = ":Telescope grep_string<CR>"
 -- Custom workaround for vertical resize on macOS
 lvim.keys.normal_mode["<C-M-l>"] = ":vertical resize -2<CR>"
 lvim.keys.normal_mode["<C-M-h>"] = ":vertical resize +2<CR>"
@@ -35,17 +38,28 @@ lvim.keys.normal_mode["gp"] = ":Copilot panel<CR>"
 -- Telescope mappings
 lvim.keys.normal_mode["<leader>ss"] = ":Telescope<CR>"
 -- Harpoon
-lvim.keys.normal_mode["<leader>mm"] = ":lua require('harpoon.ui').toggle_quick_menu()<CR>"
--- lvim.keys.normal_mode["<leader>mj"] = ":lua require('harpoon.mark').add_file()<CR>"
--- lvim.keys.normal_mode["<leader>mJ"] = ":lua require('harpoon.mark').rm_file()<CR>"
-lvim.keys.normal_mode["<leader>mt"] = ":lua require('harpoon.mark').toggle_file()<CR>"
-lvim.keys.normal_mode["<leader>ml"] = ":lua require('harpoon.ui').nav_next()<CR>"
-lvim.keys.normal_mode["<leader>mh"] = ":lua require('harpoon.ui').nav_prev()<CR>"
-lvim.keys.normal_mode["<leader>1"] = ":lua require('harpoon.ui').nav_file(1)<CR>"
-lvim.keys.normal_mode["<leader>2"] = ":lua require('harpoon.ui').nav_file(2)<CR>"
-lvim.keys.normal_mode["<leader>3"] = ":lua require('harpoon.ui').nav_file(3)<CR>"
-lvim.keys.normal_mode["<leader>4"] = ":lua require('harpoon.ui').nav_file(4)<CR>"
-lvim.keys.normal_mode["<leader>5"] = ":lua require('harpoon.ui').nav_file(5)<CR>"
+lvim.builtin.which_key.mappings["m"] = {
+  name = "Harpoon",
+  m = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>", "Quick Menu" },
+  t = { "<cmd>lua require('harpoon.ui').toggle_file()<CR>", "Toggle File" },
+  l = { "<cmd>lua require('harpoon.ui').nav_next()<CR>", "Navigate next" },
+  h = { "<cmd>lua require('harpoon.ui').nav_prev()<CR>", "Navigate previous" }
+}
+lvim.builtin.which_key.mappings["1"] = {
+  "<cmd>lua require('harpoon.ui').nav_file(1)<CR>", "Harpoon 1"
+}
+lvim.builtin.which_key.mappings["2"] = {
+  "<cmd>lua require('harpoon.ui').nav_file(2)<CR>", "Harpoon 2"
+}
+lvim.builtin.which_key.mappings["3"] = {
+  "<cmd>lua require('harpoon.ui').nav_file(3)<CR>", "Harpoon 3"
+}
+lvim.builtin.which_key.mappings["4"] = {
+  "<cmd>lua require('harpoon.ui').nav_file(4)<CR>", "Harpoon 4"
+}
+lvim.builtin.which_key.mappings["5"] = {
+  "<cmd>lua require('harpoon.ui').nav_file(5)<CR>", "Harpoon 5"
+}
 -- Terminal
 -- lvim.keys.term_mode[]
 -- Neotree
@@ -130,6 +144,12 @@ lvim.builtin.treesitter.ensure_installed = {
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enable = true
 
+-- NOTE: Monorepo workaroud
+-- Default patterns:
+-- patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml" }
+-- lvim.builtin.project.active = false
+lvim.builtin.project.patterns = { ".git" }
+
 -- generic LSP settings
 
 -- -- make sure server will always be installed even if the server is in skipped_servers list
@@ -178,6 +198,7 @@ local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "black", filetypes = { "python" } },
   { command = "isort", filetypes = { "python" } },
+  { command = "taplo", filetypes = { "toml" } },
   --   {
   --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
   --     command = "prettier",
@@ -377,6 +398,13 @@ lvim.plugins = {
             -- Code action groups
             vim.keymap.set("n", "<leader>lA", rt.code_action_group.code_action_group, { buffer = bufnr })
           end,
+          settings = {
+            ["rust-analyzer"] = {
+              cargo = {
+                allFeatures = true,
+              },
+            }
+          },
         },
       })
     end,

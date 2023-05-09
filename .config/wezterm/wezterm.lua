@@ -18,6 +18,8 @@ config.color_scheme = 'AdventureTime'
 
 config.use_fancy_tab_bar = false
 
+config.adjust_window_size_when_changing_font_size = false
+
 wezterm.on('update-right-status', function(window, pane)
   -- "Wed Mar 3 08:14"
   local date = wezterm.strftime '%a %b %-d %H:%M '
