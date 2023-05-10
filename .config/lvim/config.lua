@@ -166,7 +166,8 @@ lvim.builtin.project.patterns = { ".git" }
 --     toggle_server_expand = "o",
 -- }
 
-lvim.lsp.diagnostics.float.focusable = true
+-- Seems to be deprecated
+-- lvim.lsp.diagnostics.float.focusable = true
 
 -- ---@usage disable automatic installation of servers
 -- lvim.lsp.installer.setup.automatic_installation = false
@@ -197,7 +198,7 @@ lvim.lsp.diagnostics.float.focusable = true
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
   { command = "black", filetypes = { "python" } },
-  { command = "isort", filetypes = { "python" } },
+  { command = "isort", filetypes = { "python" }, extra_args = { "--profile", "black" } },
   { command = "taplo", filetypes = { "toml" } },
   --   {
   --     -- each formatter accepts a list of options identical to https://github.com/jose-elias-alvarez/null-ls.nvim/blob/main/doc/BUILTINS.md#Configuration
@@ -301,7 +302,7 @@ lvim.plugins = {
   },
   {
     "folke/todo-comments.nvim",
-    requires = "nvim-lua/plenary.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
     config = function()
       require("todo-comments").setup {
         -- your configuration comes here
@@ -422,17 +423,24 @@ lvim.plugins = {
   --   requires = { "mfussenegger/nvim-dap" }
   -- },
   -- Copilot section
-  { "github/copilot.vim" },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   event = { "VimEnter" },
+  --   config = function()
+  --     vim.defer_fn(function()
+  --       require("copilot").setup {
+  --         plugin_manager_path = get_runtime_dir() .. "/site/pack/packer",
+  --       }
+  --       -- require("copilot.suggestion").toggle_auto_trigger()
+  --     end, 100)
+  --   end,
+  --   }
   {
     "zbirenbaum/copilot.lua",
-    event = { "VimEnter" },
+    cmd = "Copilot",
+    event = "InsertEnter",
     config = function()
-      vim.defer_fn(function()
-        require("copilot").setup {
-          plugin_manager_path = get_runtime_dir() .. "/site/pack/packer",
-        }
-        -- require("copilot.suggestion").toggle_auto_trigger()
-      end, 100)
+      require("copilot").setup({})
     end,
   },
   {
@@ -463,7 +471,7 @@ lvim.plugins = {
   {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v2.x",
-    requires = {
+    dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
       "MunifTanjim/nui.nvim",
@@ -517,7 +525,7 @@ lvim.plugins = {
   {
     'saecki/crates.nvim',
     event = { "BufRead Cargo.toml" },
-    requires = { { 'nvim-lua/plenary.nvim' } },
+    dependencies = { { 'nvim-lua/plenary.nvim' } },
     config = function()
       require('crates').setup()
     end,
@@ -573,7 +581,7 @@ lvim.plugins = {
   { "nvim-treesitter/playground" },
   {
     "ThePrimeagen/harpoon",
-    requires = { { 'nvim-lua/plenary.nvim' } },
+    dependencies = { { 'nvim-lua/plenary.nvim' } },
     config = function()
       require("telescope").load_extension('harpoon')
       require("harpoon").setup()
@@ -584,10 +592,11 @@ lvim.plugins = {
   }
 }
 
+
 -- More Copilot required options
-vim.g.copilot_no_tab_map = true
-lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
-table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
+-- vim.g.copilot_no_tab_map = true
+-- lvim.builtin.cmp.formatting.source_names["copilot"] = "(Copilot)"
+-- table.insert(lvim.builtin.cmp.sources, 1, { name = "copilot" })
 
 -- Autocommands (https://neovim.io/doc/user/autocmd.html)
 -- vim.api.nvim_create_autocmd("BufEnter", {
