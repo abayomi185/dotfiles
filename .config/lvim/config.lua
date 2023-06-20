@@ -28,16 +28,16 @@ lvim.keys.normal_mode["<S-h>"] = ":BufferLineCyclePrev<CR>"
 lvim.keys.normal_mode["<leader>v"] = "<C-v>"
 -- nnoremap <silent> <C-z> :ToggleTerminal<Enter>
 lvim.keys.normal_mode["<C-t>"] = ":ToggleTerm<CR>"
--- Telescope mappings
+-- NOTE: Telescope mappings
 lvim.keys.normal_mode["<leader>sg"] = ":Telescope grep_string<CR>"
--- Custom workaround for vertical resize on macOS
+-- NOTE: Custom workaround for vertical resize on macOS
 lvim.keys.normal_mode["<C-M-l>"] = ":vertical resize -2<CR>"
 lvim.keys.normal_mode["<C-M-h>"] = ":vertical resize +2<CR>"
--- Copilot mapping
+-- NOTE: Copilot mapping
 lvim.keys.normal_mode["gp"] = ":Copilot panel<CR>"
--- Telescope mappings
+-- NOTE: Telescope mappings
 lvim.keys.normal_mode["<leader>ss"] = ":Telescope<CR>"
--- Harpoon
+-- NOTE: Harpoon
 lvim.builtin.which_key.mappings["m"] = {
   name = "Harpoon",
   m = { "<cmd>lua require('harpoon.ui').toggle_quick_menu()<CR>", "Quick Menu" },
@@ -60,10 +60,11 @@ lvim.builtin.which_key.mappings["4"] = {
 lvim.builtin.which_key.mappings["5"] = {
   "<cmd>lua require('harpoon.ui').nav_file(5)<CR>", "Harpoon 5"
 }
--- Terminal
--- lvim.keys.term_mode[]
--- Neotree
+-- NOTE: Neotree
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Neotree toggle<CR>", "Neotree" }
+-- NOTE: Terminal
+-- lvim.keys.term_mode[]
+lvim.keys.term_mode["<esc>"] = "<C-\\><C-n>"
 
 -- lvim.keys.normal_mode["<C-t>"] = ":ToggleTabTerminal<CR>"
 -- unmap a default keymapping
@@ -283,7 +284,7 @@ lvim.plugins = {
   -- { "Mofiqul/dracula.nvim" },
   -- { "lourenci/github-colors" },
   -- { "Th3Whit3Wolf/one-nvim" },
-  { "lunarvim/colorschemes" },
+  -- { "lunarvim/colorschemes" }, -- This causes onedarkpro to fail
 
   -- Discord presence
   {

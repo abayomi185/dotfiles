@@ -16,6 +16,8 @@ end
 config.color_scheme = 'AdventureTime'
 -- config.color_scheme = 'Batman'
 
+-- config.font = wezterm.font('JetBrains Mono', { bold = false, italic = false })
+
 config.use_fancy_tab_bar = false
 
 config.adjust_window_size_when_changing_font_size = false
