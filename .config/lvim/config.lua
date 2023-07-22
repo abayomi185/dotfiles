@@ -64,7 +64,9 @@ lvim.builtin.which_key.mappings["5"] = {
 lvim.builtin.which_key.mappings["e"] = { "<cmd>Neotree toggle<CR>", "Neotree" }
 -- NOTE: Terminal
 -- lvim.keys.term_mode[]
-lvim.keys.term_mode["<esc>"] = "<C-\\><C-n>"
+lvim.keys.term_mode["<leader><esc>"] = "<C-\\><C-n>"
+-- NOTE: Spell Check
+lvim.keys.normal_mode["zt"] = ":set spell!<CR>"
 
 -- lvim.keys.normal_mode["<C-t>"] = ":ToggleTabTerminal<CR>"
 -- unmap a default keymapping
@@ -142,6 +144,12 @@ lvim.builtin.treesitter.ensure_installed = {
   "yaml",
 }
 
+lvim.builtin.telescope.defaults.file_ignore_patterns = {
+  -- "%.lock",
+  "node_modules/",
+  "node_modules/*",
+}
+
 lvim.builtin.treesitter.ignore_install = { "haskell" }
 lvim.builtin.treesitter.highlight.enable = true
 
@@ -150,6 +158,7 @@ lvim.builtin.treesitter.highlight.enable = true
 -- patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pom.xml" }
 -- lvim.builtin.project.active = false
 lvim.builtin.project.patterns = { ".git" }
+lvim.builtin.project.manual_mode = true
 
 -- generic LSP settings
 
@@ -250,7 +259,17 @@ lvim.plugins = {
   -- { "marko-cerovac/material.nvim" },
   {
     "olimorris/onedarkpro.nvim",
-    priority = 1000
+    priority = 1000,
+    config = function()
+      require("onedarkpro").setup {
+        colors = {
+          cursorline = "#22252b"
+        },
+        options = {
+          cursorline = true
+        }
+      }
+    end
   },
   -- { "navarasu/onedark.nvim",
   --   config = function()
@@ -312,36 +331,69 @@ lvim.plugins = {
       }
     end
   },
-  {
-    "p00f/nvim-ts-rainbow",
-    config = function()
-      require("nvim-treesitter.configs").setup {
-        -- highlight = {
-        --   -- ...
-        -- },
-        rainbow = {
-          enable = true,
-          -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
-          disable = { "html" },
-          extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-          -- max_file_lines = nil, -- Do not enable for files with more than n lines, int
-          colors = {
-            "#689d6a", --green
-            "#cc241d", --red
-            "#a89984", --grey
-            "#b16286", --Magenta
-            "#d79921", --yellow
-            "#d65d0e", --orange
-            "#458588", --cyan
-          },           -- table of hex strings
-          --   -- termcolors = {
-          --   --   "Red",
-          --   --   "Green",
-          --   -- } -- table of colour name strings
-        }
-      }
-    end
-  },
+  -- {
+  --   "p00f/nvim-ts-rainbow",
+  --   config = function()
+  --     require("nvim-treesitter.configs").setup {
+  --       -- highlight = {
+  --       --   -- ...
+  --       -- },
+  --       rainbow = {
+  --         enable = true,
+  --         -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+  --         disable = { "html" },
+  --         extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+  --         -- max_file_lines = nil, -- Do not enable for files with more than n lines, int
+  --         colors = {
+  --           "#689d6a", --green
+  --           "#cc241d", --red
+  --           "#a89984", --grey
+  --           "#b16286", --Magenta
+  --           "#d79921", --yellow
+  --           "#d65d0e", --orange
+  --           "#458588", --cyan
+  --         },           -- table of hex strings
+  --         --   -- termcolors = {
+  --         --   --   "Red",
+  --         --   --   "Green",
+  --         --   -- } -- table of colour name strings
+  --       }
+  --     }
+  --   end
+  -- },
+  -- {
+  --   "HiPhish/rainbow-delimiters.nvim",
+  --   event = { "BufReadPost", "BufNewFile" },
+  --   config = function()
+  --     local rainbow_delimiters = require("rainbow-delimiters")
+  --     vim.g.rainbow_delimiters = {
+  --       strategy = {
+  --         [""] = rainbow_delimiters.strategy["global"],
+  --         html = rainbow_delimiters.strategy["local"],
+  --         vim = rainbow_delimiters.strategy["local"],
+  --         tsx = rainbow_delimiters.strategy["global"],
+  --         -- javascript = rainbow_delimiters.strategy["local"],
+  --         -- typescript = rainbow_delimiters.strategy["local"]
+  --       },
+  --       query = {
+  --         [""] = "rainbow-delimiters",
+  --         -- lua = "rainbow-blocks",
+  --         tsx = 'rainbow-delimiters-react',
+  --         -- javascript = 'rainbow-delimiters-react',
+  --         -- typescript = 'rainbow-delimiters-react'
+  --       },
+  --       highlight = {
+  --         'RainbowDelimiterYellow',
+  --         'RainbowDelimiterOrange',
+  --         'RainbowDelimiterGreen',
+  --         'RainbowDelimiterCyan',
+  --         'RainbowDelimiterViolet',
+  --         'RainbowDelimiterBlue',
+  --         'RainbowDelimiterRed',
+  --       },
+  --     }
+  --   end,
+  -- },
   {
     "windwp/nvim-ts-autotag",
     config = function()
@@ -580,6 +632,10 @@ lvim.plugins = {
   --   end
   -- }
   { "nvim-treesitter/playground" },
+  {
+    "sindrets/diffview.nvim",
+    event = "BufRead",
+  },
   {
     "ThePrimeagen/harpoon",
     dependencies = { { 'nvim-lua/plenary.nvim' } },
