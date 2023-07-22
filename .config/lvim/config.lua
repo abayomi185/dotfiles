@@ -240,11 +240,11 @@ formatters.setup {
 -- -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
-  { command = "eslint", filetypes = { "typescript", "typescriptreact" } },
-  {
-    command = "eslint_d",
-    filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "svelte" }
-  },
+  -- { command = "eslint", filetypes = { "typescript", "typescriptreact" } },
+  -- {
+  --   command = "eslint_d",
+  --   filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "svelte" }
+  -- },
   -- {
   --   command = "flake8",
   --   filetypes = { "python" },
