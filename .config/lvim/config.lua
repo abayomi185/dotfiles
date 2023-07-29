@@ -160,6 +160,26 @@ lvim.builtin.treesitter.highlight.enable = true
 lvim.builtin.project.patterns = { ".git" }
 lvim.builtin.project.manual_mode = true
 
+-- CodeLLDB paths
+local codelldb_path = vim.fn.stdpath('data') .. "/mason/packages/codelldb/extension/adapter/codelldb"
+local liblldb_path = vim.fn.stdpath('data') .. "/mason/packages/codelldb/extension/lldb/lib/liblldb.dylib"
+
+lvim.builtin.dap.on_config_done = function(dap)
+  dap.adapters.codelldb = require("rust-tools.dap").get_codelldb_adapter(codelldb_path, liblldb_path)
+  dap.configurations.rust = {
+    {
+      name = "Launch file",
+      type = "codelldb",
+      request = "launch",
+      program = function()
+        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+      end,
+      cwd = "${workspaceFolder}",
+      stopOnEntry = false,
+    },
+  }
+end
+
 -- generic LSP settings
 
 -- -- make sure server will always be installed even if the server is in skipped_servers list
@@ -435,11 +455,7 @@ lvim.plugins = {
   },
   {
     "simrat39/rust-tools.nvim",
-    -- commit = "e29fb47326093fb197f17eae5ac689979a9ce191",
     config = function()
-      -- local lsp_installer_servers = require "nvim-lsp-installer.servers"
-      -- local _, requested_server = lsp_installer_servers.get_server "rust_analyzer"
-      -- require("nvim-lsp-installer").setup {} -- Potentially reemove this, does not seem to work
       require("rust-tools").setup({
         tools = {
           inlay_hints = {
@@ -447,26 +463,29 @@ lvim.plugins = {
             other_hints_prefix = "  ",
           },
           autoSetHints = true,
-          -- hover_with_actions = true,
+          hover_with_actions = true,
           runnables = {
             use_telescope = true,
           },
-          hover_actions = {
-            auto_focus = true,
-          },
+          -- deprecated
+          -- hover_actions = {
+          --   auto_focus = true,
+          -- },
         },
         server = {
           -- cmd_env = requested_server._default_options.cmd_env,
           -- on_attach = require("lvim.lsp").common_on_attach, -- old implementation
           on_init = require("lvim.lsp").common_on_init,
-          on_attach = function(client, bufnr)
-            require("lvim.lsp").common_on_attach(client, bufnr)
-            local rt = require "rust-tools"
-            -- Hover actions
-            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-            -- Code action groups
-            vim.keymap.set("n", "<leader>lA", rt.code_action_group.code_action_group, { buffer = bufnr })
-          end,
+          on_attach = require("lvim.lsp").common_on_attach,
+          -- Seems to be a manual way below
+          -- on_attach = function(client, bufnr)
+          --   require("lvim.lsp").common_on_attach(client, bufnr)
+          --   local rt = require "rust-tools"
+          --   -- Hover actions
+          --   vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+          --   -- Code action groups
+          --   vim.keymap.set("n", "<leader>la", rt.code_action_group.code_action_group, { buffer = bufnr })
+          -- end,
           settings = {
             ["rust-analyzer"] = {
               cargo = {
@@ -475,6 +494,10 @@ lvim.plugins = {
             }
           },
         },
+        dap = {
+          adapter = require('rust-tools.dap').get_codelldb_adapter(
+            codelldb_path, liblldb_path)
+        }
       })
     end,
     ft = { "rust", "rs" },
@@ -596,6 +619,12 @@ lvim.plugins = {
     dependencies = { { 'nvim-lua/plenary.nvim' } },
     config = function()
       require('crates').setup()
+    end,
+  },
+  {
+    "j-hui/fidget.nvim",
+    config = function()
+      require("fidget").setup()
     end,
   },
   {
