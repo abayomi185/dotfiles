@@ -67,6 +67,47 @@ lvim.builtin.which_key.mappings["e"] = { "<cmd>Neotree toggle<CR>", "Neotree" }
 lvim.keys.term_mode["<leader><esc>"] = "<C-\\><C-n>"
 -- NOTE: Spell Check
 lvim.keys.normal_mode["zt"] = ":set spell!<CR>"
+-- NOTE: Live Grep
+lvim.builtin.which_key.mappings["st"] = {
+  "<cmd>lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", "text-with-args"
+}
+-- NOTE: Rust
+lvim.builtin.which_key.mappings["r"] = {
+  name = "Rust",
+  j = { "<cmd>lua require('rust-tools').join_lines.join_lines()<CR>", "Join Lines" },
+  r = { "<cmd>RustRunnables<Cr>", "Runnables" },
+  t = { "<cmd>lua _CARGO_TEST()<cr>", "Cargo Test" },
+  m = { "<cmd>RustExpandMacro<Cr>", "Expand Macro" },
+  c = { "<cmd>RustOpenCargo<Cr>", "Open Cargo" },
+  p = { "<cmd>RustParentModule<Cr>", "Parent Module" },
+  d = { "<cmd>RustDebuggables<Cr>", "Debuggables" },
+  v = { "<cmd>RustViewCrateGraph<Cr>", "View Crate Graph" },
+  R = {
+    "<cmd>lua require('rust-tools/workspace_refresh')._reload_workspace_from_cargo_toml()<Cr>",
+    "Reload Workspace",
+  },
+}
+lvim.builtin.which_key.mappings["R"] = {
+  name = "Crates",
+  o = { "<cmd>lua require('crates').show_popup()<CR>", "Show popup" },
+  r = { "<cmd>lua require('crates').reload()<CR>", "Reload" },
+  v = { "<cmd>lua require('crates').show_versions_popup()<CR>", "Show Versions" },
+  f = { "<cmd>lua require('crates').show_features_popup()<CR>", "Show Features" },
+  d = { "<cmd>lua require('crates').show_dependencies_popup()<CR>", "Show Dependencies Popup" },
+  u = { "<cmd>lua require('crates').update_crate()<CR>", "Update Crate" },
+  a = { "<cmd>lua require('crates').update_all_crates()<CR>", "Update All Crates" },
+  U = { "<cmd>lua require('crates').upgrade_crate<CR>", "Upgrade Crate" },
+  A = { "<cmd>lua require('crates').upgrade_all_crates(true)<CR>", "Upgrade All Crates" },
+  H = { "<cmd>lua require('crates').open_homepage()<CR>", "Open Homepage" },
+  R = { "<cmd>lua require('crates').open_repository()<CR>", "Open Repository" },
+  D = { "<cmd>lua require('crates').open_documentation()<CR>", "Open Documentation" },
+  C = { "<cmd>lua require('crates').open_crates_io()<CR>", "Open Crate.io" },
+}
+
+-- lvim.builtin.which_key.mappings["ds"] = {
+--   "<cmd>lua if vim.bo.filetype == 'rust' then vim.cmd[[RustDebuggables]] else require'dap'.continue() end<CR>",
+--   "Start",
+-- }
 
 -- lvim.keys.normal_mode["<C-t>"] = ":ToggleTabTerminal<CR>"
 -- unmap a default keymapping
@@ -91,6 +132,14 @@ lvim.keys.normal_mode["zt"] = ":set spell!<CR>"
 --     ["<C-k>"] = actions.move_selection_previous,
 --   },
 -- }
+
+-- NOTE: Macros
+-- 'quote' a word
+vim.api.nvim_set_keymap('n', 'qw', ":silent! normal mpea'<Esc>bi'<Esc>`pl<CR>", { noremap = true })
+-- Double "quote" a word
+vim.api.nvim_set_keymap('n', 'qd', ':silent! normal mpea"<Esc>bi"<Esc>`pl<CR>', { noremap = true })
+-- Remove quotes from a word
+vim.api.nvim_set_keymap('n', 'wq', ':silent! normal mpeld bhd `ph<CR>', { noremap = true })
 
 -- Change theme settings
 -- lvim.builtin.theme.options.dim_inactive = true
@@ -196,7 +245,7 @@ end
 --     toggle_server_expand = "o",
 -- }
 
--- Seems to be deprecated
+-- Seems to be deprecated - @me
 -- lvim.lsp.diagnostics.float.focusable = true
 
 -- ---@usage disable automatic installation of servers
@@ -244,6 +293,7 @@ formatters.setup {
     command = "prettierd",
     filetypes = { "typescript", "typescriptreact", "javascript", "javascriptreact", "vue", "svelte", "json", "jsonc" }
   },
+  -- { command = "fixjson", filetypes = { "json" } }
   -- eslint_d as a formatter
   -- {
   --   command = "eslint_d",
@@ -260,6 +310,7 @@ formatters.setup {
 -- -- set additional linters
 local linters = require "lvim.lsp.null-ls.linters"
 linters.setup {
+  -- { command = "jsonls", filetypes = { "json" } }
   -- { command = "eslint", filetypes = { "typescript", "typescriptreact" } },
   -- {
   --   command = "eslint_d",
@@ -463,7 +514,7 @@ lvim.plugins = {
             other_hints_prefix = "  ",
           },
           autoSetHints = true,
-          hover_with_actions = true,
+          -- hover_with_actions = true,
           runnables = {
             use_telescope = true,
           },
@@ -491,6 +542,10 @@ lvim.plugins = {
               cargo = {
                 allFeatures = true,
               },
+              checkOnSave = {
+                enable = true,
+                command = "clippy",
+              },
             }
           },
         },
@@ -510,6 +565,18 @@ lvim.plugins = {
       }
     end
   },
+  {
+    "nvim-telescope/telescope-live-grep-args.nvim",
+    config = function()
+      require("telescope").load_extension("live_grep_args")
+    end
+  },
+  -- {
+  --   "nvim-telescope/telescope.nvim",
+  --   config = function()
+  --     require("telescope").load_extension("live_grep_args")
+  --   end
+  -- },
   -- { "rcarriga/nvim-dap-ui",
   --   requires = { "mfussenegger/nvim-dap" }
   -- },
@@ -529,9 +596,12 @@ lvim.plugins = {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "InsertEnter",
+    event = { "InsertEnter" },
     config = function()
-      require("copilot").setup({})
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false }
+      })
     end,
   },
   {
