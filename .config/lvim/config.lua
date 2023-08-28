@@ -37,6 +37,8 @@ lvim.keys.normal_mode["<C-M-h>"] = ":vertical resize +2<CR>"
 lvim.keys.normal_mode["gp"] = ":Copilot panel<CR>"
 -- NOTE: Telescope mappings
 lvim.keys.normal_mode["<leader>ss"] = ":Telescope<CR>"
+-- NOTE: LSP mappings
+lvim.lsp.buffer_mappings.normal_mode["gh"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", "Show hover" }
 -- NOTE: Harpoon
 lvim.builtin.which_key.mappings["m"] = {
   name = "Harpoon",
@@ -65,6 +67,7 @@ lvim.builtin.which_key.mappings["e"] = { "<cmd>Neotree toggle<CR>", "Neotree" }
 -- NOTE: Terminal
 -- lvim.keys.term_mode[]
 lvim.keys.term_mode["<leader><esc>"] = "<C-\\><C-n>"
+lvim.keys.term_mode["<C-space>"] = "<C-\\><C-n>"
 -- NOTE: Spell Check
 lvim.keys.normal_mode["zt"] = ":set spell!<CR>"
 -- NOTE: Live Grep
