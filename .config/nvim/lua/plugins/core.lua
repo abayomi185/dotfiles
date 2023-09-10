@@ -1,29 +1,36 @@
 return {
   "nvim-lua/plenary.nvim",
-  { "famiu/bufdelete.nvim", cmd = { "Bdelete", "Bwipeout" } },
-  {
-    "AstroNvim/astrotheme",
-    opts = { plugins = { ["dashboard-nvim"] = true } },
-  },
-  {
-    "mrjones2014/smart-splits.nvim",
-    opts = {
-      ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" },
-      ignored_buftypes = { "nofile" },
-    },
-  },
-  {
+  "echasnovski/mini.bufremove",
+  { "AstroNvim/astrotheme", opts = { plugins = { ["dashboard-nvim"] = true } } },
+  { "max397574/better-escape.nvim", event = "InsertCharPre", opts = { timeout = 300 } },
+  { "NMAC427/guess-indent.nvim", event = "User AstroFile", config = require "plugins.configs.guess-indent" },
+  { -- TODO: REMOVE neovim-session-manager with AstroNvim v4
     "Shatur/neovim-session-manager",
     event = "BufWritePost",
     cmd = "SessionManager",
+    enabled = vim.g.resession_enabled ~= true,
+  },
+  {
+    "stevearc/resession.nvim",
+    enabled = vim.g.resession_enabled == true,
+    opts = {
+      buf_filter = function(bufnr) return require("astronvim.utils.buffer").is_restorable(bufnr) end,
+      tab_buf_filter = function(tabpage, bufnr) return vim.tbl_contains(vim.t[tabpage].bufs, bufnr) end,
+      extensions = { astronvim = {} },
+    },
   },
   {
     "s1n7ax/nvim-window-picker",
-    opts = { use_winbar = "smart" },
+    name = "window-picker",
+    opts = { picker_config = { statusline_winbar_picker = { use_winbar = "smart" } } },
+  },
+  {
+    "mrjones2014/smart-splits.nvim",
+    opts = { ignored_filetypes = { "nofile", "quickfix", "qf", "prompt" }, ignored_buftypes = { "nofile" } },
   },
   {
     "windwp/nvim-autopairs",
-    event = "InsertEnter",
+    event = "User AstroFile",
     opts = {
       check_ts = true,
       ts_config = { java = false },
@@ -84,33 +91,38 @@ return {
   },
   {
     "numToStr/Comment.nvim",
-    keys = { { "gc", mode = { "n", "v" } }, { "gb", mode = { "n", "v" } } },
+    keys = {
+      { "gc", mode = { "n", "v" }, desc = "Comment toggle linewise" },
+      { "gb", mode = { "n", "v" }, desc = "Comment toggle blockwise" },
+    },
     opts = function()
-      return { pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook() }
+      local commentstring_avail, commentstring = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
+      return commentstring_avail and commentstring and { pre_hook = commentstring.create_pre_hook() } or {}
     end,
   },
   {
     "akinsho/toggleterm.nvim",
     cmd = { "ToggleTerm", "TermExec" },
     opts = {
+      highlights = {
+        Normal = { link = "Normal" },
+        NormalNC = { link = "NormalNC" },
+        NormalFloat = { link = "NormalFloat" },
+        FloatBorder = { link = "FloatBorder" },
+        StatusLine = { link = "StatusLine" },
+        StatusLineNC = { link = "StatusLineNC" },
+        WinBar = { link = "WinBar" },
+        WinBarNC = { link = "WinBarNC" },
+      },
       size = 10,
+      on_create = function()
+        vim.opt.foldcolumn = "0"
+        vim.opt.signcolumn = "no"
+      end,
       open_mapping = [[<F7>]],
       shading_factor = 2,
       direction = "float",
-      float_opts = {
-        border = "curved",
-        highlights = { border = "Normal", background = "Normal" },
-      },
+      float_opts = { border = "rounded" },
     },
-  },
-  {
-    "NMAC427/guess-indent.nvim",
-    event = "User AstroFile",
-    config = require "plugins.configs.guess-indent",
-  },
-  {
-    "max397574/better-escape.nvim",
-    event = "InsertCharPre",
-    opts = { timeout = 300 },
   },
 }
