@@ -398,7 +398,7 @@ lvim.plugins = {
   {
     'andweeb/presence.nvim',
     config = function()
-      require("presence"):setup {
+      require("presence").setup {
         main_image = "file",
       }
     end
