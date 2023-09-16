@@ -2,6 +2,8 @@ return {
   "rebelot/heirline.nvim",
   opts = function(_, opts)
     local status = require "astronvim.utils.status"
+    local hl = require "astronvim.utils.status.hl"
+    local C = require("astronvim.utils.status.env").fallback_colors
 
     -- opts.statusline = {
     --   -- default highlight for the entire statusline
@@ -107,6 +109,51 @@ return {
     --     },
     --   },
     -- }
+
+    opts.tabline = { -- tabline
+      {              -- file tree padding
+        condition = function(self)
+          self.winid = vim.api.nvim_tabpage_list_wins(0)[1]
+          return status.condition.buffer_matches(
+            { filetype = { "aerial", "dapui_.", "neo%-tree", "NvimTree" } },
+            vim.api.nvim_win_get_buf(self.winid)
+          )
+        end,
+        provider = function(self) return string.rep(" ", vim.api.nvim_win_get_width(self.winid) + 1) end,
+        hl = { bg = "dark_bg" },
+      },
+      status.heirline.make_buflist(status.component.tabline_file_info(
+        {
+          hl = function(self)
+            local tab_type = self.tab_type
+            if self._show_picker and self.tab_type ~= "buffer_active" then tab_type = "buffer_visible" end
+            return hl.get_attributes(tab_type)
+          end,
+          surround = {
+            separator = "custom_right",
+            color = function(self) return self.tab_type == "buffer_active" and { left = C.blue } or C.none end
+          },
+        }
+      )),                                                                     -- component for each buffer tab
+      status.component.fill { hl = { bg = "tabline_bg" } },                   -- fill the rest of the tabline with background color
+      {                                                                       -- tab list
+        condition = function() return #vim.api.nvim_list_tabpages() >= 2 end, -- only show tabs if there are more than one
+        status.heirline.make_tablist {                                        -- component for each tab
+          provider = status.provider.tabnr(),
+          hl = function(self)
+            return status.hl.get_attributes(status.heirline.tab_type(self, "tab"), true)
+          end,
+        },
+        { -- close button for current tab
+          provider = status.provider.close_button { kind = "TabClose", padding = { left = 1, right = 1 } },
+          hl = status.hl.get_attributes("tab_close", true),
+          on_click = {
+            callback = function() require("astronvim.utils.buffer").close_tab() end,
+            name = "heirline_tabline_close_tab_callback"
+          },
+        },
+      },
+    }
 
     opts.winbar = { -- create custom winbar
       -- store the current buffer number
