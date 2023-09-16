@@ -162,6 +162,16 @@ return {
     end,
     lazy = false
   },
+  {
+    "RRethy/vim-illuminate",
+    event = "User AstroFile",
+    opts = {
+      options = {
+        delay = 120,
+      }
+    },
+    config = function(_, opts) require("illuminate").configure(opts) end,
+  },
 
   -- RUST
   {
@@ -319,3 +329,4 @@ return {
   --   end
   -- },
 }
+

@@ -20,6 +20,15 @@ return {
   -- Set colorscheme to use
   colorscheme = "onedark",
 
+  -- add new user interface icon
+  icons = {
+    -- VimIcon = "",
+    -- GitBranch = "",
+    -- GitAdd = "",
+    -- GitChange = "",
+    -- GitDelete = "",
+  },
+
   -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
     virtual_text = true,
@@ -51,7 +60,13 @@ return {
     servers = {
       -- "pyright"
     },
-    skip_setup = { "rust_analyzer" }
+    skip_setup = { "rust_analyzer" },
+    mappings = {
+      n = {
+        ["<leader>ll"] = { "<cmd>lua vim.lsp.codelens.run()<cr>", desc = "LSP CodeLens run" },
+        ["<leader>lL"] = { "<cmd>lua vim.lsp.codelens.refresh()<cr>", desc = "LSP CodeLens refresh" },
+      }
+    }
   },
 
   -- Configure require("lazy").setup() options
@@ -65,17 +80,60 @@ return {
     },
   },
 
-  -- highlights = {}
+  heirline = {
+    separators = {
+      path = " > ",
+      breadcrumbs = " > ",
+      -- left = { "", " " }, -- separator for the left side of the statusline
+      -- right = { " ", "" }, -- separator for the right side of the statusline
+      -- tab = { "", "" },
+      -- block = { "", "█" },
+    },
+    -- add new colors that can be used by heirline
+    -- colors = function(hl)
+    --   local get_hlgroup = require("astronvim.utils").get_hlgroup
+    --   -- use helper function to get highlight group properties
+    --   local comment_fg = get_hlgroup("Comment").fg
+    --   hl.git_branch_fg = comment_fg
+    --   hl.git_added = comment_fg
+    --   hl.git_changed = comment_fg
+    --   hl.git_removed = comment_fg
+    --   hl.blank_bg = get_hlgroup("Folded").fg
+    --   hl.file_info_bg = get_hlgroup("Visual").bg
+    --   hl.nav_icon_bg = get_hlgroup("String").fg
+    --   hl.nav_fg = hl.nav_icon_bg
+    --   hl.folder_icon_bg = get_hlgroup("Error").fg
+    --   return hl
+    -- end,
+    -- attributes = {
+    --   mode = { bold = true },
+    -- },
+    -- icon_highlights = {
+    --   file_icon = {
+    --     statusline = false,
+    --   },
+    -- },
+  },
+
+  -- highlights = {},
 
   -- This function is run last and is a good place to configuring
   -- augroups/autocommands and custom filetypes also this just pure lua so
   -- anything that doesn't fit in the normal config locations above can go here
   polish = function()
+    -- TODO:
+    -- DAP
+    -- Style the tab bar
+    -- Style the status bar
+
+    -- NOTE: Some Docs
+    -- Highlight group for LSP is changed in Onedarkpro theme
+
     -- Load last session
     require("resession").load(vim.fn.getcwd(), { dir = "dirsession" })
 
     -- Telescope file ignore patterns
-    require('telescope').setup { defaults = { file_ignore_patterns = { "node_modules" } } }
+    -- require('telescope').setup { defaults = { file_ignore_patterns = { "node_modules" } } }
 
     -- NOTE: Macros - 'quote' a word
     vim.api.nvim_set_keymap('n', 'qw', ":silent! normal mpea'<Esc>bi'<Esc>`pl<CR>", { noremap = true })
@@ -84,11 +142,6 @@ return {
     -- Remove quotes from a word
     vim.api.nvim_set_keymap('n', 'wq', ':silent! normal mpeld bhd `ph<CR>', { noremap = true })
 
-    -- TODO:
-    -- DAP
-    -- Style the tab bar
-    -- Style the status bar
-    -- Add file directory to status bar or to the tab bar, winbar?
 
     -- Copilot colour
     vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })

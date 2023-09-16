@@ -3,6 +3,8 @@
 -- Please use this mappings table to set keyboard mapping since this is the
 -- lower level configuration and more robust one. (which-key will
 -- automatically pick-up stored data by this setting.)
+local ui = require "astronvim.utils.ui"
+
 return {
   -- NOTE: Normal Mode
   n = {
@@ -45,9 +47,18 @@ return {
 
     -- NOTE: LSP mappings
     ["gh"] = { "<cmd>lua vim.lsp.buf.hover()<cr>", desc = "Show hover" },
+    -- ["<leader>ll"] = { "<cmd>lua vim.lsp.codelens.run()<cr>", desc = "LSP CodeLens run" },
+    -- ["<leader>lL"] = { "<cmd>lua vim.lsp.codelens.refresh()<cr>", desc = "LSP CodeLens refresh" },
 
     -- NOTE: Spell Check
     -- ["zt"] = ":set spell!<CR>"
+
+    -- NOTE: Buffer
+    ["<leader>bh"] =
+    { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" },
+    ["<leader>bl"] =
+    { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" },
+    ["<leader>br"] = false,
 
     -- NOTE: Harpoon
     ["<leader>m"] = { name = "Harpoon" },

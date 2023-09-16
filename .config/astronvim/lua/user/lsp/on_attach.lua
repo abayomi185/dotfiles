@@ -8,8 +8,8 @@
 --   end
 -- end
 --
--- return function(client, bufnr)
---   -- if client.supports_method "textDocument/documentHighlight" then
---   --   vim.api.nvim_del_augroup_by_name "lsp_document_highlight"
---   -- end
--- end
+return function(client, bufnr)
+  if client.supports_method "textDocument/documentHighlight" then
+    vim.api.nvim_del_augroup_by_name "lsp_document_highlight"
+  end
+end
