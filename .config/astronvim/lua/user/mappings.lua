@@ -24,7 +24,11 @@ return {
     ["<leader>h"] = { ":nohlsearch<cr>", desc = "No Highlight" },
 
     -- ["<C-s>"] = ":w<CR>",
-    -- ["<M-s>"] = ":w<CR>",
+    -- ["<M-s>"] = ":w<CR>", 
+
+    -- Move line
+    ["<M-j>"] = ":m .+1<CR>==",
+    ["<M-k>"] = ":m .-2<CR>==",
 
     ["<S-l>"] = { function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end, desc =
     "Next buffer" },
@@ -35,6 +39,8 @@ return {
 
     -- NOTE: Telescope mappings
     -- ["<leader>sg"] = ":Telescope grep_string<CR>",
+    ["<leader>fw"] = { function() require("telescope").extensions.live_grep_args.live_grep_args() end, desc = "Find Words" },
+    ["<leader>bf"] = { function() require("telescope.builtin").buffers() end, desc = "Buffer List" },
 
     -- NOTE: Custom workaround for vertical resize on macOS
     ["<C-M-l>"] = ":vertical resize -2<CR>",
@@ -116,6 +122,14 @@ return {
   -- NOTE: Visual Mode
   v = {
     ["<leader>d"] = '"_d', -- register
+
+    -- Move line
+    ["<A-j>"] = ":m '>+1<CR>gv-gv",
+    ["<A-k>"] = ":m '<-2<CR>gv-gv",
+
+    -- Better indenting
+    ["<"] = "<gv",
+    [">"] = ">gv",
   },
 
   -- NOTE: Terminal Mode

@@ -102,7 +102,19 @@ return {
     ft = { "markdown" },
     cmd = { "Glow" },
   },
-
+{
+  "nvim-telescope/telescope.nvim",
+  opts = function(_, opts)
+    local actions = require "telescope.actions"
+    opts.mappings = {
+      i = {
+        ["<C-j>"] = actions.cycle_history_next,
+        ["<C-k>"] = actions.cycle_history_prev,
+      },
+    }
+    return opts
+  end
+},
   -- OTHER
   {
     "folke/trouble.nvim",
