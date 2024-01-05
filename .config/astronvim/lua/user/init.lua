@@ -47,6 +47,7 @@ return {
         ignore_filetypes = { -- disable format on save for specified filetypes
           -- "python",
           -- "typescriptreact",
+          -- "json"
         },
       },
       disabled = { -- disable formatting capabilities for the listed language servers
@@ -67,8 +68,8 @@ return {
       n = {
         ["<leader>ll"] = { "<cmd>lua vim.lsp.codelens.run()<cr>", desc = "LSP CodeLens run" },
         ["<leader>lL"] = { "<cmd>lua vim.lsp.codelens.refresh()<cr>", desc = "LSP CodeLens refresh" },
-      }
-    }
+      },
+    },
   },
 
   -- Configure require("lazy").setup() options
@@ -136,19 +137,25 @@ return {
     -- NOTE: Some Docs
     -- Highlight group for LSP is changed in Onedarkpro theme
 
-    -- Load last session
-    require("resession").load(vim.fn.getcwd(), { dir = "dirsession" })
+    -- Load last session if no args are passed to nvim
+    if vim.fn.argc() == 0 then
+      -- In case things go wrong
+      -- require("resession").delete(vim.fn.getcwd(), { dir = "dirsession" })
+      require("resession").load(vim.fn.getcwd(), { dir = "dirsession" })
+    end
+
+    -- Load launch.json
+    require("dap.ext.vscode").load_launchjs(nil, { rt_lldb = { "rust" }, ["probe-rs-debug"] = { "rust" } })
 
     -- Telescope file ignore patterns
     -- require('telescope').setup { defaults = { file_ignore_patterns = { "node_modules" } } }
 
     -- NOTE: Macros - 'quote' a word
-    vim.api.nvim_set_keymap('n', 'qw', ":silent! normal mpea'<Esc>bi'<Esc>`pl<CR>", { noremap = true })
+    vim.api.nvim_set_keymap("n", "qw", ":silent! normal mpea'<Esc>bi'<Esc>`pl<CR>", { noremap = true })
     -- Double "quote" a word
-    vim.api.nvim_set_keymap('n', 'qd', ':silent! normal mpea"<Esc>bi"<Esc>`pl<CR>', { noremap = true })
+    vim.api.nvim_set_keymap("n", "qd", ':silent! normal mpea"<Esc>bi"<Esc>`pl<CR>', { noremap = true })
     -- Remove quotes from a word
-    vim.api.nvim_set_keymap('n', 'wq', ':silent! normal mpeld bhd `ph<CR>', { noremap = true })
-
+    vim.api.nvim_set_keymap("n", "wq", ":silent! normal mpeld bhd `ph<CR>", { noremap = true })
 
     -- Copilot colour
     vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
