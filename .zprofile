@@ -48,10 +48,5 @@ export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 #Disable Homebrew auto update
 export HOMEBREW_NO_AUTO_UPDATE=1
 
-##
-# Your previous /Users/yomi/.zprofile file was backed up as /Users/yomi/.zprofile.macports-saved_2021-09-02_at_16:33:56
-##
-
-# MacPorts Installer addition on 2021-09-02_at_16:33:56: adding an appropriate PATH variable for use with MacPorts.
-export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
-# Finished adapting your PATH environment variable for use with MacPorts.
+# Homebrew Apple Silicon
+eval "$(/opt/homebrew/bin/brew shellenv)"

@@ -10,7 +10,7 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 
 # ZSH_THEME="powerlevel10k/powerlevel10k"
 
-source /usr/local/share/antigen/antigen.zsh
+source /opt/homebrew/share/antigen/antigen.zsh
 antigen use oh-my-zsh
 
 # plugins=(
@@ -61,7 +61,7 @@ export PATH="/usr/local/opt/util-linux/sbin:$PATH"
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # export PATH="$HOME/.rbenv/shims:$PATH"
-export PATH="/usr/local/opt/ruby/bin:$PATH"
+# export PATH="/usr/local/opt/ruby/bin:$PATH"
 eval "$(rbenv init - zsh)"
 
 eval "$(starship init zsh)"
