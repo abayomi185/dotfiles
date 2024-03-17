@@ -52,7 +52,7 @@ maps.n["<leader>pl"] = { "<cmd>AstroChangelog<cr>", desc = "AstroNvim Changelog"
 maps.n["<leader>c"] = { function() require("astronvim.utils.buffer").close() end, desc = "Close buffer" }
 maps.n["<leader>C"] = { function() require("astronvim.utils.buffer").close(0, true) end, desc = "Force close buffer" }
 maps.n["]b"] =
-  { function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
+{ function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end, desc = "Next buffer" }
 maps.n["[b"] = {
   function() require("astronvim.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
   desc = "Previous buffer",
@@ -68,17 +68,17 @@ maps.n["<b"] = {
 
 maps.n["<leader>b"] = sections.b
 maps.n["<leader>bc"] =
-  { function() require("astronvim.utils.buffer").close_all(true) end, desc = "Close all buffers except current" }
+{ function() require("astronvim.utils.buffer").close_all(true) end, desc = "Close all buffers except current" }
 maps.n["<leader>bC"] = { function() require("astronvim.utils.buffer").close_all() end, desc = "Close all buffers" }
 maps.n["<leader>bl"] =
-  { function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
+{ function() require("astronvim.utils.buffer").close_left() end, desc = "Close all buffers to the left" }
 maps.n["<leader>bp"] = { function() require("astronvim.utils.buffer").prev() end, desc = "Previous buffer" }
 maps.n["<leader>br"] =
-  { function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
+{ function() require("astronvim.utils.buffer").close_right() end, desc = "Close all buffers to the right" }
 maps.n["<leader>bs"] = sections.bs
 maps.n["<leader>bse"] = { function() require("astronvim.utils.buffer").sort "extension" end, desc = "By extension" }
 maps.n["<leader>bsr"] =
-  { function() require("astronvim.utils.buffer").sort "unique_path" end, desc = "By relative path" }
+{ function() require("astronvim.utils.buffer").sort "unique_path" end, desc = "By relative path" }
 maps.n["<leader>bsp"] = { function() require("astronvim.utils.buffer").sort "full_path" end, desc = "By full path" }
 maps.n["<leader>bsi"] = { function() require("astronvim.utils.buffer").sort "bufnr" end, desc = "By buffer number" }
 maps.n["<leader>bsm"] = { function() require("astronvim.utils.buffer").sort "modified" end, desc = "By modification" }
@@ -127,10 +127,10 @@ if is_available "alpha-nvim" then
   maps.n["<leader>h"] = {
     function()
       local wins = vim.api.nvim_tabpage_list_wins(0)
-      if #wins > 1 and vim.api.nvim_get_option_value("filetype", { win = wins[1] }) == "neo-tree" then
+      if #wins > 1 and vim.bo[vim.api.nvim_win_get_buf(wins[1])].filetype == "neo-tree" then
         vim.fn.win_gotoid(wins[2]) -- go to non-neo-tree window to toggle alpha
       end
-      require("alpha").start(false, require("alpha").default_config)
+      require("alpha").start(false)
     end,
     desc = "Home Screen",
   }
@@ -187,7 +187,7 @@ if is_available "neovim-session-manager" then
   maps.n["<leader>Sd"] = { "<cmd>SessionManager! delete_session<cr>", desc = "Delete session" }
   maps.n["<leader>Sf"] = { "<cmd>SessionManager! load_session<cr>", desc = "Search sessions" }
   maps.n["<leader>S."] =
-    { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" }
+  { "<cmd>SessionManager! load_current_dir_session<cr>", desc = "Load current directory session" }
 end
 if is_available "resession.nvim" then
   maps.n["<leader>S"] = sections.S
@@ -240,7 +240,7 @@ if is_available "telescope.nvim" then
   maps.n["<leader>f"] = sections.f
   maps.n["<leader>g"] = sections.g
   maps.n["<leader>gb"] =
-    { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
+  { function() require("telescope.builtin").git_branches { use_file_path = true } end, desc = "Git branches" }
   maps.n["<leader>gc"] = {
     function() require("telescope.builtin").git_commits { use_file_path = true } end,
     desc = "Git commits (repository)",
@@ -250,20 +250,20 @@ if is_available "telescope.nvim" then
     desc = "Git commits (current file)",
   }
   maps.n["<leader>gt"] =
-    { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
+  { function() require("telescope.builtin").git_status { use_file_path = true } end, desc = "Git status" }
   maps.n["<leader>f<CR>"] = { function() require("telescope.builtin").resume() end, desc = "Resume previous search" }
   maps.n["<leader>f'"] = { function() require("telescope.builtin").marks() end, desc = "Find marks" }
   maps.n["<leader>f/"] =
-    { function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Find words in current buffer" }
+  { function() require("telescope.builtin").current_buffer_fuzzy_find() end, desc = "Find words in current buffer" }
   maps.n["<leader>fa"] = {
     function()
       local cwd = vim.fn.stdpath "config" .. "/.."
       local search_dirs = {}
-      for _, dir in ipairs(astronvim.supported_configs) do -- search all supported config locations
-        if dir == astronvim.install.home then dir = dir .. "/lua/user" end -- don't search the astronvim core files
+      for _, dir in ipairs(astronvim.supported_configs) do                      -- search all supported config locations
+        if dir == astronvim.install.home then dir = dir .. "/lua/user" end      -- don't search the astronvim core files
         if vim.fn.isdirectory(dir) == 1 then table.insert(search_dirs, dir) end -- add directory to search if exists
       end
-      if vim.tbl_isempty(search_dirs) then -- if no config folders found, show warning
+      if vim.tbl_isempty(search_dirs) then                                      -- if no config folders found, show warning
         utils.notify("No user configuration files found", vim.log.levels.WARN)
       else
         if #search_dirs == 1 then cwd = search_dirs[1] end -- if only one directory, focus cwd
@@ -290,12 +290,14 @@ if is_available "telescope.nvim" then
   maps.n["<leader>fm"] = { function() require("telescope.builtin").man_pages() end, desc = "Find man" }
   if is_available "nvim-notify" then
     maps.n["<leader>fn"] =
-      { function() require("telescope").extensions.notify.notify() end, desc = "Find notifications" }
+    { function() require("telescope").extensions.notify.notify() end, desc = "Find notifications" }
+    maps.n["<leader>uD"] =
+    { function() require("notify").dismiss { pending = true, silent = true } end, desc = "Dismiss notifications" }
   end
   maps.n["<leader>fo"] = { function() require("telescope.builtin").oldfiles() end, desc = "Find history" }
   maps.n["<leader>fr"] = { function() require("telescope.builtin").registers() end, desc = "Find registers" }
   maps.n["<leader>ft"] =
-    { function() require("telescope.builtin").colorscheme { enable_preview = true } end, desc = "Find themes" }
+  { function() require("telescope.builtin").colorscheme { enable_preview = true } end, desc = "Find themes" }
   maps.n["<leader>fw"] = { function() require("telescope.builtin").live_grep() end, desc = "Find words" }
   maps.n["<leader>fW"] = {
     function()
@@ -337,8 +339,9 @@ if is_available "toggleterm.nvim" then
   if vim.fn.executable "node" == 1 then
     maps.n["<leader>tn"] = { function() utils.toggle_term_cmd "node" end, desc = "ToggleTerm node" }
   end
-  if vim.fn.executable "gdu" == 1 then
-    maps.n["<leader>tu"] = { function() utils.toggle_term_cmd "gdu" end, desc = "ToggleTerm gdu" }
+  local gdu = vim.fn.has "mac" == 1 and "gdu-go" or "gdu"
+  if vim.fn.executable(gdu) == 1 then
+    maps.n["<leader>tu"] = { function() utils.toggle_term_cmd(gdu) end, desc = "ToggleTerm gdu" }
   end
   if vim.fn.executable "btm" == 1 then
     maps.n["<leader>tt"] = { function() utils.toggle_term_cmd "btm" end, desc = "ToggleTerm btm" }
@@ -348,10 +351,12 @@ if is_available "toggleterm.nvim" then
   maps.n["<leader>tf"] = { "<cmd>ToggleTerm direction=float<cr>", desc = "ToggleTerm float" }
   maps.n["<leader>th"] = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", desc = "ToggleTerm horizontal split" }
   maps.n["<leader>tv"] = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", desc = "ToggleTerm vertical split" }
-  maps.n["<F7>"] = { "<cmd>ToggleTerm<cr>", desc = "Toggle terminal" }
+  maps.n["<F7>"] = { '<Cmd>execute v:count . "ToggleTerm"<CR>', desc = "Toggle terminal" }
+  maps.i["<F7>"] = { "<Esc>" .. maps.n["<F7>"][1], desc = maps.n["<F7>"].desc }
   maps.t["<F7>"] = maps.n["<F7>"]
   maps.n["<C-'>"] = maps.n["<F7>"] -- requires terminal that supports binding <C-'>
-  maps.t["<C-'>"] = maps.n["<F7>"] -- requires terminal that supports binding <C-'>
+  maps.i["<C-'>"] = maps.i["<F7>"] -- requires terminal that supports binding <C-'>
+  maps.t["<C-'>"] = maps.t["<F7>"] -- requires terminal that supports binding <C-'>
 end
 
 if is_available "nvim-dap" then
@@ -361,7 +366,7 @@ if is_available "nvim-dap" then
   -- run `nvim -V3log +quit` and search through the "Terminal info" in the `log` file for the correct keyname
   maps.n["<F5>"] = { function() require("dap").continue() end, desc = "Debugger: Start" }
   maps.n["<F17>"] = { function() require("dap").terminate() end, desc = "Debugger: Stop" } -- Shift+F5
-  maps.n["<F21>"] = { -- Shift+F9
+  maps.n["<F21>"] = {                                                                      -- Shift+F9
     function()
       vim.ui.input({ prompt = "Condition: " }, function(condition)
         if condition then require("dap").set_breakpoint(condition) end
