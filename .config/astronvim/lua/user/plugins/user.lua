@@ -54,7 +54,22 @@ return {
   --   end,
   -- },
 
-  -- CMP
+  -- NOTE: UI
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.opt.laststatus = 3
+      vim.opt.splitkeep = "screen"
+    end,
+    opts = {
+      right = {
+        { ft = "codecompanion", title = "Code Companion Chat", size = { width = 0.45 } },
+      },
+    },
+  },
+
+  -- NOTE: CMP
   { -- override nvim-cmp plugin
     "hrsh7th/nvim-cmp",
     -- override the options table that is used in the `require("cmp").setup()` call
@@ -65,9 +80,9 @@ return {
       -- modify the sources part of the options table
       opts.sources = cmp.config.sources {
         { name = "nvim_lsp", priority = 1000 },
-        { name = "luasnip",  priority = 750 },
-        { name = "buffer",   priority = 500 },
-        { name = "path",     priority = 250 },
+        { name = "luasnip", priority = 750 },
+        { name = "buffer", priority = 500 },
+        { name = "path", priority = 250 },
       }
 
       -- return the new table to be used
@@ -97,11 +112,11 @@ return {
   },
 
   -- MARKDOWN
-  {
-    "npxbr/glow.nvim",
-    ft = { "markdown" },
-    cmd = { "Glow" },
-  },
+  -- {
+  --   "npxbr/glow.nvim",
+  --   ft = { "markdown" },
+  --   cmd = { "Glow" },
+  -- },
   {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
@@ -142,7 +157,7 @@ return {
   {
     "rcarriga/nvim-notify",
     config = function(plugin, opts)
-      require "plugins.configs.notify" (plugin, opts)
+      require "plugins.configs.notify"(plugin, opts)
       local notify = require "notify"
       notify.setup {
         background_colour = "#000000",
@@ -163,7 +178,7 @@ return {
     "romgrk/nvim-treesitter-context",
     config = function()
       require("treesitter-context").setup {
-        enable = true,   -- Enable this plugin (Can be enabled/disabled later via commands)
+        enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
         throttle = true, -- Throttles plugin updates (may improve performance)
         patterns = {
           -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
@@ -297,6 +312,7 @@ return {
         enabled = false,
       },
       panel = { enabled = false },
+      filetypes = { yaml = true },
     },
     lazy = false,
   },
@@ -307,12 +323,69 @@ return {
     lazy = false,
   },
 
-  -- OLLAMA
+  -- AI
+  -- {
+  --   "MunifTanjim/nui.nvim",
+  --   lazy = false,
+  -- },
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     local home = vim.fn.expand "$HOME"
+  --     require("chatgpt").setup {
+  --       api_key_cmd = "gpg --decrypt " .. home .. "/.openai-api-key.gpg",
+  --     }
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "folke/trouble.nvim",
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  -- },
   {
-    "David-Kunz/gen.nvim",
+    "abayomi185/gen.nvim",
+    dir = "~/s-projek/gen.nvim",
     opts = {
-      model = "mistral_7b_openorca",
+      model = "gemma_7b_instruct",
+      command = "curl --silent --no-buffer -X POST https://astrysk-ollama-testflight.duckdns.org/api/chat -d $body",
+      debug = true,
+      no_auto_close = true,
+      -- show_model = true,
+      -- display_mode = "split",
+      -- ollama_url = "https://astrysk-ollama-testflight.duckdns.org/api/generate",
     },
+    lazy = false,
+  },
+  {
+    "abayomi185/llm.nvim",
+    dir = "~/s-projek/llm.nvim",
+    opts = {
+      backend = "openai",
+    },
+    lazy = false,
+    enabled = false,
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    dir = "~/oss-projek/codecompanion.nvim",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-lua/plenary.nvim",
+      "stevearc/dressing.nvim", -- Optional: Improves the default Neovim UI
+    },
+    opts = function()
+      return {
+        adapters = {
+          chat = require("codecompanion.adapters").use("openai", {
+            env = {
+              api_key = "gpg --decrypt ~/.openai-api-key.gpg",
+            },
+          }),
+        },
+      }
+    end,
     lazy = false,
   },
 
@@ -324,4 +397,20 @@ return {
   --     require("telescope").load_extension("live_grep_args")
   --   end
   -- },
+
+  -- Clipboard
+  {
+    "ojroques/nvim-osc52",
+    opts = {
+      silent = true,
+      tmux_passthrough = true,
+    },
+  },
+
+  -- Utils
+  {
+    "Joakker/lua-json5",
+    build = "./install.sh",
+    lazy = false,
+  },
 }
