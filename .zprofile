@@ -9,24 +9,10 @@ export PATH="/usr/local/opt/python/libexec/bin:/usr/local/sbin:$PATH"
 
 export XDG_CONFIG_HOME="$HOME/.config"
 
-alias pip=pip3
-
-alias k=kubectl
-
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-
-alias lvim="/Users/yomi/.local/bin/lvim"
-
-# alias nvim="lvim"
-alias vi="lvim"
-
 # Make the terminal safe
 set -o noclobber
 #alias cp='cp -i'
 #alias mv='mv -i'
-
-# dotfiles
-alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 
 # Show neofetch on launch
 #neofetch
@@ -50,3 +36,17 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 
 # Homebrew Apple Silicon
 eval "$(/opt/homebrew/bin/brew shellenv)"
+
+##
+# Your previous /Users/yomi/.zprofile file was backed up as /Users/yomi/.zprofile.macports-saved_2024-02-10_at_19:54:11
+##
+
+# MacPorts Installer addition on 2024-02-10_at_19:54:11: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+
+# MacPorts Installer addition on 2024-02-10_at_19:54:11: adding an appropriate MANPATH variable for use with MacPorts.
+export MANPATH="/opt/local/share/man:$MANPATH"
+# Finished adapting your MANPATH environment variable for use with MacPorts.
+
