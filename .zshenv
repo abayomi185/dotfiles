@@ -17,3 +17,5 @@ alias k=kubectl
 alias vi="nvim"
 
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+
+alias develop="nix develop -c $SHELL"

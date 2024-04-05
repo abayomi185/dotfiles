@@ -1,3 +1,7 @@
+# LANG config
+# Fixes issues with SSH and tmux
+export LANG="en_US.UTF-8"
+
 # Terminal color config
 export TERM=xterm-256color
 
