@@ -1,37 +1,66 @@
+local prefix = "<Leader>fd"
 return {
-  "nvim-telescope/telescope.nvim",
-  dependencies = {
-    { "nvim-telescope/telescope-fzf-native.nvim", enabled = vim.fn.executable "make" == 1, build = "make" },
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    lazy = false,
   },
-  cmd = "Telescope",
-  opts = function()
-    local actions = require "telescope.actions"
-    local get_icon = require("astronvim.utils").get_icon
-    return {
-      defaults = {
-        git_worktrees = vim.g.git_worktrees,
-        prompt_prefix = get_icon("Selected", 1),
-        selection_caret = get_icon("Selected", 1),
-        path_display = { "truncate" },
-        sorting_strategy = "ascending",
-        layout_config = {
-          horizontal = { prompt_position = "top", preview_width = 0.55 },
-          vertical = { mirror = false },
-          width = 0.87,
-          height = 0.80,
-          preview_cutoff = 120,
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      -- This will not install any breaking changes.
+      -- For major updates, this must be adjusted manually.
+      version = "^1.0.0",
+    },
+    opts = function(_, opts)
+      require("telescope").load_extension "live_grep_args"
+      local actions = require "telescope.actions"
+      opts.defaults.mappings = {
+        i = {
+          ["<C-j>"] = actions.cycle_history_next,
+          ["<C-k>"] = actions.cycle_history_prev,
+          ["<PageUp>"] = actions.preview_scrolling_up,
+          ["<PageDown>"] = actions.preview_scrolling_down,
         },
-        mappings = {
-          i = {
-            ["<C-n>"] = actions.cycle_history_next,
-            ["<C-p>"] = actions.cycle_history_prev,
-            ["<C-j>"] = actions.move_selection_next,
-            ["<C-k>"] = actions.move_selection_previous,
+      }
+      return opts
+    end,
+  },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-telescope/telescope-dap.nvim",
+      {
+        "AstroNvim/astrocore",
+        opts = {
+          mappings = {
+            n = {
+              [prefix .. "c"] = {
+                "<Cmd>lua require('telescope').extensions.dap.commands()<CR>",
+                desc = "Telescope DAP commands",
+              },
+              [prefix .. "f"] = {
+                "<Cmd>lua require('telescope').extensions.dap.frames()<CR>",
+                desc = "Telescope DAP frames",
+              },
+              [prefix .. "g"] = {
+                "<Cmd>lua require('telescope').extensions.dap.configurations()<CR>",
+                desc = "Telescope DAP configurations",
+              },
+              [prefix .. "l"] = {
+                "<Cmd>lua require('telescope').extensions.dap.list_breakpoints()<CR>",
+                desc = "Telescope DAP list breakpoints",
+              },
+              [prefix .. "v"] = {
+                "<Cmd>lua require('telescope').extensions.dap.variables()<CR>",
+                desc = "Telescope DAP variables",
+              },
+            },
           },
-          n = { q = actions.close },
         },
       },
-    }
-  end,
-  config = require "plugins.configs.telescope",
+    },
+    opts = function() require("telescope").load_extension "dap" end,
+  },
 }
